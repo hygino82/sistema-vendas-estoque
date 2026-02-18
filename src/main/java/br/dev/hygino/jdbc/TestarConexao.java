@@ -1,5 +1,6 @@
 package br.dev.hygino.jdbc;
 
+import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 
 public class TestarConexao {
@@ -8,7 +9,7 @@ public class TestarConexao {
         try {
             new ConexaoBanco().getConnection();
             JOptionPane.showMessageDialog(null, "Conectado com sucesso ao banco de dados!");
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(null, "Erro ao tentar se conectar com o banco de dados!\n" + e.getMessage());
         }
     }

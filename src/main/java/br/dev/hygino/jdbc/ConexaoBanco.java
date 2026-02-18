@@ -13,7 +13,7 @@ public class ConexaoBanco {
         try {
             return DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao tentar se conectar com o banco de dados!");
+            JOptionPane.showMessageDialog(null, "Erro ao tentar se conectar com o banco de dados!\n" + e);
         }
         return null;
     }
