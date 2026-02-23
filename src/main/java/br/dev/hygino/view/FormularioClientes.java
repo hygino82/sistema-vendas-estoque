@@ -5,14 +5,17 @@
 package br.dev.hygino.view;
 
 import br.dev.hygino.dao.ClienteDao;
+import br.dev.hygino.exceptions.ClientNotFoundException;
 import br.dev.hygino.models.Cliente;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author hygino
  */
 public class FormularioClientes extends javax.swing.JFrame {
-
+    
     private final ClienteDao dao;
 
     /**
@@ -152,10 +155,17 @@ public class FormularioClientes extends javax.swing.JFrame {
 
         jLabel2.setText("Código:");
 
+        txtCodigo.setEditable(false);
+
         jLabel3.setText("Nome:");
 
         btnPesquisar.setBackground(new java.awt.Color(204, 255, 204));
         btnPesquisar.setText("Pesquisar");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("E-mail:");
 
@@ -336,6 +346,11 @@ public class FormularioClientes extends javax.swing.JFrame {
 
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/novo.png"))); // NOI18N
         btnNovo.setText("NOVO");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/salvar.png"))); // NOI18N
         btnSalvar.setText("SALVAR");
@@ -416,7 +431,7 @@ public class FormularioClientes extends javax.swing.JFrame {
         String bairro = txtBairro.getText();
         String cidade = txtCidade.getText();
         String estado = cbUf.getSelectedItem().toString();
-
+        
         Cliente cliente = new Cliente(
                 null,
                 nome,
@@ -432,9 +447,37 @@ public class FormularioClientes extends javax.swing.JFrame {
                 bairro,
                 cidade,
                 estado);
-
+        
         dao.salvar(cliente);
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        String nome = txtNome.getText();
+        try {
+            if (nome.isBlank()) { // Verifica se a string está vazia ou contém apenas espaços em branco
+                throw new IllegalArgumentException("Preencha o nome para realizar a busca!");
+            }
+            var cliente = dao.buscarCliente(nome) // Removi o '.' solto aqui
+                    .orElseThrow(() -> new ClientNotFoundException("Cliente não encontrado."));
+
+            // Se chegou aqui, o cliente foi encontrado
+            popularCampos(cliente);
+        } catch (ClientNotFoundException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro na Busca", JOptionPane.WARNING_MESSAGE);
+            limparCampos(); // Limpa os campos se o cliente não for encontrado
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao acessar o banco de dados: " + e.getMessage(), "Erro de Banco de Dados", JOptionPane.ERROR_MESSAGE);
+            limparCampos(); // Limpa os campos em caso de erro no DB
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Atenção", JOptionPane.INFORMATION_MESSAGE); // Ajustei o tipo de mensagem
+            limparCampos(); // Limpa os campos se o nome estiver vazio
+            txtNome.requestFocus(); // Foca no campo nome para que o usuário possa digitar
+        }
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        limparCampos();
+    }//GEN-LAST:event_btnNovoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -512,4 +555,38 @@ public class FormularioClientes extends javax.swing.JFrame {
     private javax.swing.JTextField txtRg;
     private javax.swing.JFormattedTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
+
+    private void popularCampos(Cliente cliente) {
+        txtNome.setText(cliente.getNome());
+        txtRg.setText(cliente.getRg());
+        txtCpf.setText(cliente.getCpf());
+        txtEmail.setText(cliente.getEmail());
+        txtTelefone.setText(cliente.getTelefone());
+        txtCelular.setText(cliente.getCelular());
+        txtCep.setText(cliente.getCep());
+        txtEndereco.setText(cliente.getEndereco());
+        txtNumero.setText(cliente.getNumero().toString());
+        txtComplemento.setText(cliente.getComplemento());
+        txtBairro.setText(cliente.getBairro());
+        txtCidade.setText(cliente.getCidade());
+        txtCodigo.setText(cliente.getId().toString());
+        cbUf.setSelectedItem(cliente.getEstado());
+    }
+    
+    private void limparCampos() {
+        txtNome.setText("");
+        txtRg.setText("");
+        txtCpf.setText("");
+        txtEmail.setText("");
+        txtTelefone.setText("");
+        txtCelular.setText("");
+        txtCep.setText("");
+        txtEndereco.setText("");
+        txtNumero.setText("");
+        txtComplemento.setText("");
+        txtBairro.setText("");
+        txtCidade.setText("");
+        cbUf.setSelectedItem("PR");
+        txtCodigo.setText("");
+    }
 }

@@ -1,10 +1,13 @@
 package br.dev.hygino.dao;
 
+import br.dev.hygino.exceptions.ClientNotFoundException;
 import br.dev.hygino.jdbc.ConexaoBanco;
 import br.dev.hygino.models.Cliente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import javax.swing.JOptionPane;
 // Supondo que a classe Cliente já exista com getters para os atributos
 
@@ -64,6 +67,42 @@ public class ClienteDao {
     public void closeConnection() throws SQLException {
         if (connection != null && !connection.isClosed()) {
             connection.close();
+        }
+    }
+
+    public Optional<Cliente> buscarCliente(String nome) throws SQLException { // Mantenha throws SQLException para propagar erros do BD
+        final var sql = """
+                  SELECT * FROM tb_clientes
+                  WHERE UPPER(nome) = UPPER(?)
+                  """;
+
+        Optional<Cliente> result = Optional.empty();
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, nome);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Cliente clienteEncontrado = new Cliente();
+                    clienteEncontrado.setId(rs.getInt("id"));
+                    clienteEncontrado.setNome(rs.getString("nome"));
+                    clienteEncontrado.setRg(rs.getString("rg"));
+                    clienteEncontrado.setCpf(rs.getString("cpf"));
+                    clienteEncontrado.setEmail(rs.getString("email"));
+                    clienteEncontrado.setTelefone(rs.getString("telefone"));
+                    clienteEncontrado.setCelular(rs.getString("celular"));
+                    clienteEncontrado.setCep(rs.getString("cep"));
+                    clienteEncontrado.setNumero(rs.getInt("numero"));
+                    clienteEncontrado.setComplemento(rs.getString("complemento"));
+                    clienteEncontrado.setBairro(rs.getString("bairro"));
+                    clienteEncontrado.setCidade(rs.getString("cidade"));
+                    clienteEncontrado.setEstado(rs.getString("estado"));
+                    clienteEncontrado.setEndereco(rs.getString("endereco"));
+                    result = Optional.of(clienteEncontrado);
+                }
+                return result;
+            }
+        } catch (SQLException e) {
+            throw new ClientNotFoundException("Erro ao buscar cliente: " + e.getMessage() + "Erro no Banco de Dados");
         }
     }
 }
