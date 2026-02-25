@@ -7,6 +7,7 @@ package br.dev.hygino.view;
 import br.dev.hygino.dao.ClienteDao;
 import br.dev.hygino.exceptions.ClientNotFoundException;
 import br.dev.hygino.models.Cliente;
+import br.dev.hygino.utils.Utilitarios;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -38,12 +39,6 @@ public class FormularioClientes extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         painelGuias = new javax.swing.JTabbedPane();
-        painelConsulta = new javax.swing.JPanel();
-        jLabel16 = new javax.swing.JLabel();
-        txtPesquisaNome = new javax.swing.JTextField();
-        btnPesquisaNome = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaClientes = new javax.swing.JTable();
         painelDados = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
@@ -74,6 +69,12 @@ public class FormularioClientes extends javax.swing.JFrame {
         txtCpf = new javax.swing.JFormattedTextField();
         jLabel15 = new javax.swing.JLabel();
         txtComplemento = new javax.swing.JTextField();
+        painelConsulta = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        txtPesquisaNome = new javax.swing.JTextField();
+        btnPesquisaNome = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelaClientes = new javax.swing.JTable();
         jButton6 = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
@@ -82,6 +83,7 @@ public class FormularioClientes extends javax.swing.JFrame {
         btnImprimir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -106,52 +108,6 @@ public class FormularioClientes extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jLabel16.setText("Nome:");
-
-        btnPesquisaNome.setText("Pesquisar");
-
-        tabelaClientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Id", "Nome", "E-mail", "Celular", "Telefone", "CEP", "Endereço", "Número", "Bairro", "Cidade", "Complemento", "UF", "RG", "CPF"
-            }
-        ));
-        jScrollPane1.setViewportView(tabelaClientes);
-
-        javax.swing.GroupLayout painelConsultaLayout = new javax.swing.GroupLayout(painelConsulta);
-        painelConsulta.setLayout(painelConsultaLayout);
-        painelConsultaLayout.setHorizontalGroup(
-            painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelConsultaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(painelConsultaLayout.createSequentialGroup()
-                        .addComponent(jLabel16)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtPesquisaNome, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(btnPesquisaNome)
-                        .addGap(0, 1278, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        painelConsultaLayout.setVerticalGroup(
-            painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelConsultaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPesquisaNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPesquisaNome))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(131, Short.MAX_VALUE))
-        );
-
-        painelGuias.addTab("Consulta de clientes", painelConsulta);
 
         jLabel2.setText("Código:");
 
@@ -341,6 +297,52 @@ public class FormularioClientes extends javax.swing.JFrame {
         );
 
         painelGuias.addTab("Dados pessoais", painelDados);
+
+        jLabel16.setText("Nome:");
+
+        btnPesquisaNome.setText("Pesquisar");
+
+        tabelaClientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Nome", "E-mail", "Celular", "Telefone", "CEP", "Endereço", "Número", "Bairro", "Cidade", "Complemento", "UF", "RG", "CPF"
+            }
+        ));
+        jScrollPane1.setViewportView(tabelaClientes);
+
+        javax.swing.GroupLayout painelConsultaLayout = new javax.swing.GroupLayout(painelConsulta);
+        painelConsulta.setLayout(painelConsultaLayout);
+        painelConsultaLayout.setHorizontalGroup(
+            painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelConsultaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(painelConsultaLayout.createSequentialGroup()
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtPesquisaNome, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnPesquisaNome)
+                        .addGap(0, 1278, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        painelConsultaLayout.setVerticalGroup(
+            painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelConsultaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPesquisaNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPesquisaNome))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(131, Short.MAX_VALUE))
+        );
+
+        painelGuias.addTab("Consulta de clientes", painelConsulta);
 
         jButton6.setText("NOVO");
 
@@ -574,7 +576,7 @@ public class FormularioClientes extends javax.swing.JFrame {
     }
     
     private void limparCampos() {
-        txtNome.setText("");
+        /*txtNome.setText("");
         txtRg.setText("");
         txtCpf.setText("");
         txtEmail.setText("");
@@ -587,6 +589,7 @@ public class FormularioClientes extends javax.swing.JFrame {
         txtBairro.setText("");
         txtCidade.setText("");
         cbUf.setSelectedItem("PR");
-        txtCodigo.setText("");
+        txtCodigo.setText("");*/
+        Utilitarios.limpaTela(this.painelDados);
     }
 }
