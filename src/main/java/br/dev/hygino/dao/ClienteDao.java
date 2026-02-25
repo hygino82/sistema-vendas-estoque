@@ -3,10 +3,13 @@ package br.dev.hygino.dao;
 import br.dev.hygino.exceptions.ClientNotFoundException;
 import br.dev.hygino.jdbc.ConexaoBanco;
 import br.dev.hygino.models.Cliente;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 import javax.swing.JOptionPane;
 // Supondo que a classe Cliente já exista com getters para os atributos
@@ -103,6 +106,51 @@ public class ClienteDao {
             }
         } catch (SQLException e) {
             throw new ClientNotFoundException("Erro ao buscar cliente: " + e.getMessage() + "Erro no Banco de Dados");
+        }
+    }
+
+    public List<Cliente> listar(String nome) {
+
+        List<Cliente> clientes = new ArrayList<>();
+
+        var sql = """
+        SELECT * FROM tb_clientes
+        WHERE UPPER(nome) LIKE CONCAT('%', UPPER(?), '%')
+        """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            // operador de coalescência nula apenas no Java
+            stmt.setString(1, nome == null ? "" : nome);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Cliente cliente = new Cliente(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("rg"),
+                        rs.getString("cpf"),
+                        rs.getString("email"),
+                        rs.getString("telefone"),
+                        rs.getString("celular"),
+                        rs.getString("cep"),
+                        rs.getString("endereco"),
+                        rs.getInt("numero"),
+                        rs.getString("complemento"),
+                        rs.getString("bairro"),
+                        rs.getString("cidade"),
+                        rs.getString("estado")
+                );
+                clientes.add(cliente);
+            }
+
+            return clientes;
+
+        } catch (SQLException e) {
+            throw new ClientNotFoundException(
+                    "Erro ao buscar clientes: " + e.getMessage()
+            );
         }
     }
 }

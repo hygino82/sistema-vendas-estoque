@@ -9,14 +9,16 @@ import br.dev.hygino.exceptions.ClientNotFoundException;
 import br.dev.hygino.models.Cliente;
 import br.dev.hygino.utils.Utilitarios;
 import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author hygino
  */
 public class FormularioClientes extends javax.swing.JFrame {
-    
+
     private final ClienteDao dao;
 
     /**
@@ -300,7 +302,13 @@ public class FormularioClientes extends javax.swing.JFrame {
 
         jLabel16.setText("Nome:");
 
+        btnPesquisaNome.setBackground(new java.awt.Color(255, 255, 153));
         btnPesquisaNome.setText("Pesquisar");
+        btnPesquisaNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisaNomeActionPerformed(evt);
+            }
+        });
 
         tabelaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -433,7 +441,7 @@ public class FormularioClientes extends javax.swing.JFrame {
         String bairro = txtBairro.getText();
         String cidade = txtCidade.getText();
         String estado = cbUf.getSelectedItem().toString();
-        
+
         Cliente cliente = new Cliente(
                 null,
                 nome,
@@ -449,7 +457,7 @@ public class FormularioClientes extends javax.swing.JFrame {
                 bairro,
                 cidade,
                 estado);
-        
+
         dao.salvar(cliente);
     }//GEN-LAST:event_btnSalvarActionPerformed
 
@@ -480,6 +488,29 @@ public class FormularioClientes extends javax.swing.JFrame {
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         limparCampos();
     }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnPesquisaNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaNomeActionPerformed
+        final String nome = txtPesquisaNome.getText();
+        try {
+            var result = dao.listar(nome);
+            if (!result.isEmpty()) {
+                popularTabela(result);
+
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "A lista está vazia!"
+                );
+            }
+        } catch (ClientNotFoundException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }//GEN-LAST:event_btnPesquisaNomeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -574,7 +605,7 @@ public class FormularioClientes extends javax.swing.JFrame {
         txtCodigo.setText(cliente.getId().toString());
         cbUf.setSelectedItem(cliente.getEstado());
     }
-    
+
     private void limparCampos() {
         /*txtNome.setText("");
         txtRg.setText("");
@@ -591,5 +622,32 @@ public class FormularioClientes extends javax.swing.JFrame {
         cbUf.setSelectedItem("PR");
         txtCodigo.setText("");*/
         Utilitarios.limpaTela(this.painelDados);
+    }
+
+    private void popularTabela(List<Cliente> clientes) {
+
+        DefaultTableModel model = (DefaultTableModel) tabelaClientes.getModel();
+
+        // limpa a tabela
+        model.setRowCount(0);
+
+        for (Cliente c : clientes) {
+            model.addRow(new Object[]{
+                c.getId(),
+                c.getNome(),
+                c.getEmail(),
+                c.getCelular(),
+                c.getTelefone(),
+                c.getCep(),
+                c.getEndereco(),
+                c.getNumero(),
+                c.getBairro(),
+                c.getCidade(),
+                c.getComplemento(),
+                c.getEstado(),
+                c.getRg(),
+                c.getCpf()
+            });
+        }
     }
 }
