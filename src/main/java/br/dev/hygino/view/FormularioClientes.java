@@ -4,6 +4,7 @@ import br.dev.hygino.dao.ClienteDao;
 import br.dev.hygino.exceptions.ClientNotFoundException;
 import br.dev.hygino.models.Cliente;
 import br.dev.hygino.utils.Utilitarios;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -117,6 +118,12 @@ public class FormularioClientes extends javax.swing.JFrame {
         txtCodigo.setEditable(false);
 
         jLabel3.setText("Nome:");
+
+        txtNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNomeKeyPressed(evt);
+            }
+        });
 
         btnPesquisar.setBackground(new java.awt.Color(204, 255, 204));
         btnPesquisar.setText("Pesquisar");
@@ -469,23 +476,7 @@ public class FormularioClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        String nome = txtNome.getText();
-        try {
-            if (nome.isBlank()) {
-                throw new IllegalArgumentException("Preencha o nome para realizar a busca!");
-            }
-            var cliente = dao.buscarCliente(nome)
-                    .orElseThrow(() -> new ClientNotFoundException("Cliente não encontrado."));
-
-            popularCampos(cliente);
-        } catch (ClientNotFoundException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro na Busca", JOptionPane.WARNING_MESSAGE);
-            Utilitarios.limpaTela(this.painelDados);
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Atenção", JOptionPane.INFORMATION_MESSAGE); // Ajustei o tipo de mensagem
-            Utilitarios.limpaTela(this.painelDados);
-            txtNome.requestFocus();
-        }
+        buscarDadosDoCliente();
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
@@ -530,10 +521,15 @@ public class FormularioClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void txtPesquisaNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaNomeKeyReleased
-        final String nome = txtPesquisaNome.getText();
-        final List<Cliente> clientes = dao.listar(nome);
-        popularTabela(clientes);
+
+        carregarDadosNaTabela();
     }//GEN-LAST:event_txtPesquisaNomeKeyReleased
+
+    private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            buscarDadosDoCliente();
+        }
+    }//GEN-LAST:event_txtNomeKeyPressed
 
     /**
      * @param args the command line arguments
@@ -653,6 +649,32 @@ public class FormularioClientes extends javax.swing.JFrame {
                 c.getRg(),
                 c.getCpf()
             });
+        }
+    }
+
+    private void carregarDadosNaTabela() {
+        final String nome = txtPesquisaNome.getText();
+        final List<Cliente> clientes = dao.listar(nome);
+        popularTabela(clientes);
+    }
+
+    private void buscarDadosDoCliente() {
+        String nome = txtNome.getText();
+        try {
+            if (nome.isBlank()) {
+                throw new IllegalArgumentException("Preencha o nome para realizar a busca!");
+            }
+            var cliente = dao.buscarCliente(nome)
+                    .orElseThrow(() -> new ClientNotFoundException("Cliente não encontrado."));
+
+            popularCampos(cliente);
+        } catch (ClientNotFoundException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro na Busca", JOptionPane.WARNING_MESSAGE);
+            Utilitarios.limpaTela(this.painelDados);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Atenção", JOptionPane.INFORMATION_MESSAGE); // Ajustei o tipo de mensagem
+            Utilitarios.limpaTela(this.painelDados);
+            txtNome.requestFocus();
         }
     }
 }
