@@ -71,7 +71,7 @@ public class ClienteDao {
         }
     }
 
-    public Optional<Cliente> buscarCliente(String nome) throws SQLException { // Mantenha throws SQLException para propagar erros do BD
+    public Optional<Cliente> buscarCliente(String nome) {
         final var sql = """
                   SELECT * FROM tb_clientes
                   WHERE UPPER(nome) = UPPER(?)

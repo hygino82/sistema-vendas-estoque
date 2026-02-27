@@ -1,14 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package br.dev.hygino.view;
 
 import br.dev.hygino.dao.ClienteDao;
 import br.dev.hygino.exceptions.ClientNotFoundException;
 import br.dev.hygino.models.Cliente;
 import br.dev.hygino.utils.Utilitarios;
-import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -308,6 +303,12 @@ public class FormularioClientes extends javax.swing.JFrame {
 
         jLabel16.setText("Nome:");
 
+        txtPesquisaNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPesquisaNomeKeyReleased(evt);
+            }
+        });
+
         btnPesquisaNome.setBackground(new java.awt.Color(255, 255, 153));
         btnPesquisaNome.setText("Pesquisar");
         btnPesquisaNome.addActionListener(new java.awt.event.ActionListener() {
@@ -470,24 +471,20 @@ public class FormularioClientes extends javax.swing.JFrame {
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         String nome = txtNome.getText();
         try {
-            if (nome.isBlank()) { // Verifica se a string está vazia ou contém apenas espaços em branco
+            if (nome.isBlank()) {
                 throw new IllegalArgumentException("Preencha o nome para realizar a busca!");
             }
-            var cliente = dao.buscarCliente(nome) // Removi o '.' solto aqui
+            var cliente = dao.buscarCliente(nome)
                     .orElseThrow(() -> new ClientNotFoundException("Cliente não encontrado."));
 
-            // Se chegou aqui, o cliente foi encontrado
             popularCampos(cliente);
         } catch (ClientNotFoundException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro na Busca", JOptionPane.WARNING_MESSAGE);
             Utilitarios.limpaTela(this.painelDados);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao acessar o banco de dados: " + e.getMessage(), "Erro de Banco de Dados", JOptionPane.ERROR_MESSAGE);
-            Utilitarios.limpaTela(this.painelDados);
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Atenção", JOptionPane.INFORMATION_MESSAGE); // Ajustei o tipo de mensagem
             Utilitarios.limpaTela(this.painelDados);
-            txtNome.requestFocus(); // Foca no campo nome para que o usuário possa digitar
+            txtNome.requestFocus();
         }
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
@@ -531,6 +528,12 @@ public class FormularioClientes extends javax.swing.JFrame {
             );
         }
     }//GEN-LAST:event_formWindowActivated
+
+    private void txtPesquisaNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaNomeKeyReleased
+        final String nome = txtPesquisaNome.getText();
+        final List<Cliente> clientes = dao.listar(nome);
+        popularTabela(clientes);
+    }//GEN-LAST:event_txtPesquisaNomeKeyReleased
 
     /**
      * @param args the command line arguments
