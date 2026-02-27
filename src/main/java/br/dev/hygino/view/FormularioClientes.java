@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 public class FormularioClientes extends javax.swing.JFrame {
 
     private final ClienteDao dao;
+    // private List<Cliente> clientes;
 
     /**
      * Creates new form FormularioClientes
@@ -86,6 +87,11 @@ public class FormularioClientes extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -474,19 +480,19 @@ public class FormularioClientes extends javax.swing.JFrame {
             popularCampos(cliente);
         } catch (ClientNotFoundException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro na Busca", JOptionPane.WARNING_MESSAGE);
-            limparCampos(); // Limpa os campos se o cliente não for encontrado
+            Utilitarios.limpaTela(this.painelDados);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Erro ao acessar o banco de dados: " + e.getMessage(), "Erro de Banco de Dados", JOptionPane.ERROR_MESSAGE);
-            limparCampos(); // Limpa os campos em caso de erro no DB
+            Utilitarios.limpaTela(this.painelDados);
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Atenção", JOptionPane.INFORMATION_MESSAGE); // Ajustei o tipo de mensagem
-            limparCampos(); // Limpa os campos se o nome estiver vazio
+            Utilitarios.limpaTela(this.painelDados);
             txtNome.requestFocus(); // Foca no campo nome para que o usuário possa digitar
         }
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        limparCampos();
+        Utilitarios.limpaTela(this.painelDados);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnPesquisaNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaNomeActionPerformed
@@ -511,6 +517,20 @@ public class FormularioClientes extends javax.swing.JFrame {
             );
         }
     }//GEN-LAST:event_btnPesquisaNomeActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        try {
+            final List<Cliente> clientes = dao.listar("");
+            popularTabela(clientes);
+        } catch (ClientNotFoundException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
@@ -604,24 +624,6 @@ public class FormularioClientes extends javax.swing.JFrame {
         txtCidade.setText(cliente.getCidade());
         txtCodigo.setText(cliente.getId().toString());
         cbUf.setSelectedItem(cliente.getEstado());
-    }
-
-    private void limparCampos() {
-        /*txtNome.setText("");
-        txtRg.setText("");
-        txtCpf.setText("");
-        txtEmail.setText("");
-        txtTelefone.setText("");
-        txtCelular.setText("");
-        txtCep.setText("");
-        txtEndereco.setText("");
-        txtNumero.setText("");
-        txtComplemento.setText("");
-        txtBairro.setText("");
-        txtCidade.setText("");
-        cbUf.setSelectedItem("PR");
-        txtCodigo.setText("");*/
-        Utilitarios.limpaTela(this.painelDados);
     }
 
     private void popularTabela(List<Cliente> clientes) {

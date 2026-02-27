@@ -9,10 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Optional;
 import javax.swing.JOptionPane;
-// Supondo que a classe Cliente já exista com getters para os atributos
 
 public class ClienteDao {
 
