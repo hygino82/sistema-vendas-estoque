@@ -332,6 +332,11 @@ public class FormularioClientes extends javax.swing.JFrame {
                 "Id", "Nome", "E-mail", "Celular", "Telefone", "CEP", "Endereço", "Número", "Bairro", "Cidade", "Complemento", "UF", "RG", "CPF"
             }
         ));
+        tabelaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabelaClientes);
 
         javax.swing.GroupLayout painelConsultaLayout = new javax.swing.GroupLayout(painelConsulta);
@@ -473,6 +478,7 @@ public class FormularioClientes extends javax.swing.JFrame {
                 estado);
 
         dao.salvar(cliente);
+        Utilitarios.limpaTela(this.painelDados);
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
@@ -530,6 +536,37 @@ public class FormularioClientes extends javax.swing.JFrame {
             buscarDadosDoCliente();
         }
     }//GEN-LAST:event_txtNomeKeyPressed
+
+    private void tabelaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaClientesMouseClicked
+        int row = tabelaClientes.getSelectedRow();
+
+        if (row == -1) {
+            return; // nenhuma linha selecionada
+        }
+
+        painelGuias.setSelectedIndex(0);
+
+        txtCodigo.setText(getValue(row, 0));
+        txtNome.setText(getValue(row, 1));
+        txtEmail.setText(getValue(row, 2));
+        txtCelular.setText(getValue(row, 3));
+        txtTelefone.setText(getValue(row, 4));
+        txtCep.setText(getValue(row, 5));
+        txtEndereco.setText(getValue(row, 6));
+        txtNumero.setText(getValue(row, 7));
+        txtBairro.setText(getValue(row, 8));
+        txtCidade.setText(getValue(row, 9));
+        txtComplemento.setText(getValue(row, 10));
+        cbUf.setSelectedItem(getValue(row, 11));
+        txtRg.setText(getValue(row, 12));
+        txtCpf.setText(getValue(row, 13));
+
+    }//GEN-LAST:event_tabelaClientesMouseClicked
+
+    private String getValue(int row, int column) {
+        Object value = tabelaClientes.getValueAt(row, column);
+        return value != null ? value.toString() : "";
+    }
 
     /**
      * @param args the command line arguments

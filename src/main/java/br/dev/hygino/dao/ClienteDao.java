@@ -58,7 +58,7 @@ public class ClienteDao {
             // 2. Executar a consulta
             stmt.execute(); // ou stmt.executeUpdate() se você quiser saber quantas linhas foram afetadas
             JOptionPane.showMessageDialog(null, "Cliente " + cliente.getNome() + " salvo com sucesso!");
-            closeConnection();
+            //closeConnection();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao salvar cliente: " + e.getMessage());
         }
