@@ -69,13 +69,17 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         txtCpf = new javax.swing.JFormattedTextField();
         jLabel15 = new javax.swing.JLabel();
         txtComplemento = new javax.swing.JTextField();
+        txtSenha = new javax.swing.JPasswordField();
+        jLabel17 = new javax.swing.JLabel();
+        cbNivel = new javax.swing.JComboBox<>();
+        jLabel18 = new javax.swing.JLabel();
+        txtCargo = new javax.swing.JTextField();
         painelConsulta = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         txtPesquisaNome = new javax.swing.JTextField();
         btnPesquisaNome = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaClientes = new javax.swing.JTable();
-        jButton6 = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
@@ -83,7 +87,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         btnImprimir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Formulário de Clientes");
+        setTitle("Formulário de Funcionários");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -96,7 +100,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Hack Nerd Font", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Cadastro de Clientes");
+        jLabel1.setText("Cadastro de Funcionários");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -185,6 +189,12 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
 
         jLabel15.setText("Complemento:");
 
+        jLabel17.setText("Senha:");
+
+        cbNivel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ADMINISTRADOR", "USUÁRIO" }));
+
+        jLabel18.setText("Cargo:");
+
         javax.swing.GroupLayout painelDadosLayout = new javax.swing.GroupLayout(painelDados);
         painelDados.setLayout(painelDadosLayout);
         painelDadosLayout.setHorizontalGroup(
@@ -192,8 +202,12 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
             .addGroup(painelDadosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(painelDadosLayout.createSequentialGroup()
+                    .addGroup(painelDadosLayout.createSequentialGroup()
+                        .addComponent(jLabel15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, painelDadosLayout.createSequentialGroup()
                             .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(painelDadosLayout.createSequentialGroup()
                                     .addComponent(jLabel9)
@@ -218,7 +232,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                                     .addComponent(jLabel11)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(painelDadosLayout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, painelDadosLayout.createSequentialGroup()
                             .addComponent(jLabel6)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -226,7 +240,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                             .addComponent(jLabel7)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(txtEndereco))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelDadosLayout.createSequentialGroup()
+                        .addGroup(painelDadosLayout.createSequentialGroup()
                             .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel2)
                                 .addComponent(jLabel3)
@@ -243,20 +257,28 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jLabel5)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, painelDadosLayout.createSequentialGroup()
+                            .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(painelDadosLayout.createSequentialGroup()
+                                    .addComponent(jLabel13)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtRg, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jLabel14))
+                                .addGroup(painelDadosLayout.createSequentialGroup()
+                                    .addComponent(jLabel17)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(18, 18, 18)
+                            .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cbNivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(painelDadosLayout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtRg, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel14)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(painelDadosLayout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(1095, Short.MAX_VALUE))
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCargo, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(1038, 1181, Short.MAX_VALUE))
         );
         painelDadosLayout.setVerticalGroup(
             painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,7 +327,16 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                     .addComponent(txtRg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 131, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbNivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(txtCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 45, Short.MAX_VALUE))
         );
 
         painelGuias.addTab("Dados pessoais", painelDados);
@@ -355,7 +386,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                         .addComponent(txtPesquisaNome, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
                         .addComponent(btnPesquisaNome)
-                        .addGap(0, 1278, Short.MAX_VALUE)))
+                        .addGap(0, 1364, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         painelConsultaLayout.setVerticalGroup(
@@ -371,9 +402,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                 .addContainerGap(131, Short.MAX_VALUE))
         );
 
-        painelGuias.addTab("Consulta de clientes", painelConsulta);
-
-        jButton6.setText("NOVO");
+        painelGuias.addTab("Consulta de funcionários", painelConsulta);
 
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/novo.png"))); // NOI18N
         btnNovo.setText("NOVO");
@@ -428,11 +457,6 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnImprimir)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(373, 373, 373)
-                    .addComponent(jButton6)
-                    .addContainerGap(1284, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -448,11 +472,6 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                     .addComponent(btnExcluir)
                     .addComponent(btnImprimir))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(314, 314, 314)
-                    .addComponent(jButton6)
-                    .addContainerGap(281, Short.MAX_VALUE)))
         );
 
         pack();
@@ -674,8 +693,8 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
     private javax.swing.JButton btnPesquisaNome;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox<String> cbNivel;
     private javax.swing.JComboBox<String> cbUf;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -684,6 +703,8 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -699,6 +720,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
     private javax.swing.JTabbedPane painelGuias;
     private javax.swing.JTable tabelaClientes;
     private javax.swing.JTextField txtBairro;
+    private javax.swing.JTextField txtCargo;
     private javax.swing.JFormattedTextField txtCelular;
     private javax.swing.JFormattedTextField txtCep;
     private javax.swing.JTextField txtCidade;
@@ -711,6 +733,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtPesquisaNome;
     private javax.swing.JTextField txtRg;
+    private javax.swing.JPasswordField txtSenha;
     private javax.swing.JFormattedTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
 
