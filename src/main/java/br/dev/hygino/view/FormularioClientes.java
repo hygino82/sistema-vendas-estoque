@@ -4,6 +4,7 @@ import br.dev.hygino.dao.ClienteDao;
 import br.dev.hygino.exceptions.ClientNotFoundException;
 import br.dev.hygino.models.Cliente;
 import br.dev.hygino.utils.Utilitarios;
+import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -399,6 +400,11 @@ public class FormularioClientes extends javax.swing.JFrame {
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/excluir.png"))); // NOI18N
         btnExcluir.setText("EXCLUIR");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/printer.png"))); // NOI18N
         btnImprimir.setText("IMPRIMIR");
@@ -603,6 +609,25 @@ public class FormularioClientes extends javax.swing.JFrame {
         dao.atualizar(cliente);
         Utilitarios.limpaTela(this.painelDados);
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        // 1. Pergunta se o usuário tem certeza
+        int resposta = JOptionPane.showConfirmDialog(null,
+                "Deseja realmente excluir este registro?",
+                "Confirmação de Exclusão",
+                javax.swing.JOptionPane.YES_NO_OPTION);
+
+        // 2. Se a resposta for sim (YES_OPTION), ele prossegue
+        if (resposta == JOptionPane.YES_OPTION) {
+            try {
+                int id = Integer.parseInt(txtCodigo.getText());
+                dao.excluir(id);
+                Utilitarios.limpaTela(this.painelDados);
+            } catch (HeadlessException | NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao excluir: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     private String getValue(int row, int column) {
         Object value = tabelaClientes.getValueAt(row, column);

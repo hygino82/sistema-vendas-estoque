@@ -108,6 +108,18 @@ public class ClienteDao {
         }
     }
 
+    public void excluir(int id) {
+        final var sql = "DELETE FROM tb_clientes WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.execute();
+            JOptionPane.showMessageDialog(null, "Cliente removido com sucesso!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao remover cliente: " + e.getMessage());
+        }
+    }
+
     // Método para fechar a conexão (geralmente gerenciada externamente ou por um pool)
     public void closeConnection() throws SQLException {
         if (connection != null && !connection.isClosed()) {
