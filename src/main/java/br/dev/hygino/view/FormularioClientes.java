@@ -391,6 +391,11 @@ public class FormularioClientes extends javax.swing.JFrame {
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/editar.png"))); // NOI18N
         btnEditar.setText("EDITAR");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/excluir.png"))); // NOI18N
         btnExcluir.setText("EXCLUIR");
@@ -562,6 +567,42 @@ public class FormularioClientes extends javax.swing.JFrame {
         txtCpf.setText(getValue(row, 13));
 
     }//GEN-LAST:event_tabelaClientesMouseClicked
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        String nome = txtNome.getText();
+        String cpf = txtCpf.getText();
+        String rg = txtRg.getText();
+        String email = txtEmail.getText();
+        String telefone = txtTelefone.getText();
+        String celular = txtCelular.getText();
+        String cep = txtCep.getText();
+        String endereco = txtEndereco.getText();
+        int numero = Integer.parseInt(txtNumero.getText());
+        String complemento = txtComplemento.getText();
+        String bairro = txtBairro.getText();
+        String cidade = txtCidade.getText();
+        String estado = cbUf.getSelectedItem().toString();
+        int id = Integer.parseInt(txtCodigo.getText());
+
+        Cliente cliente = new Cliente(
+                id,
+                nome,
+                rg,
+                cpf,
+                email,
+                telefone,
+                celular,
+                cep,
+                endereco,
+                numero,
+                complemento,
+                bairro,
+                cidade,
+                estado);
+
+        dao.atualizar(cliente);
+        Utilitarios.limpaTela(this.painelDados);
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     private String getValue(int row, int column) {
         Object value = tabelaClientes.getValueAt(row, column);
