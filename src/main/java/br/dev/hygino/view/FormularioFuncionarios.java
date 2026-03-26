@@ -3,7 +3,6 @@ package br.dev.hygino.view;
 import br.dev.hygino.dao.FuncionarioDao;
 import br.dev.hygino.exceptions.ClientNotFoundException;
 import br.dev.hygino.exceptions.EmployeeNotFoundException;
-import br.dev.hygino.models.Cliente;
 import br.dev.hygino.models.Funcionario;
 import br.dev.hygino.utils.Utilitarios;
 import java.awt.HeadlessException;
@@ -601,6 +600,9 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         cbUf.setSelectedItem(getValue(row, 11));
         txtRg.setText(getValue(row, 12));
         txtCpf.setText(getValue(row, 13));
+        txtSenha.setText(getValue(row,14));
+        txtCargo.setText(getValue(row, 15));
+        cbNivel.setSelectedItem(getValue(row, 16));
 
     }//GEN-LAST:event_tabelaClientesMouseClicked
 
