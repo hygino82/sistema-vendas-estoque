@@ -1,8 +1,10 @@
 package br.dev.hygino.view;
 
-import br.dev.hygino.dao.ClienteDao;
+import br.dev.hygino.dao.FuncionarioDao;
 import br.dev.hygino.exceptions.ClientNotFoundException;
+import br.dev.hygino.exceptions.EmployeeNotFoundException;
 import br.dev.hygino.models.Cliente;
+import br.dev.hygino.models.Funcionario;
 import br.dev.hygino.utils.Utilitarios;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
@@ -16,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FormularioFuncionarios extends javax.swing.JFrame {
 
-    private final ClienteDao dao;
+    private final FuncionarioDao dao;
     // private List<Cliente> clientes;
 
     /**
@@ -24,7 +26,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
      */
     public FormularioFuncionarios() {
         initComponents();
-        dao = new ClienteDao();
+        dao = new FuncionarioDao();
     }
 
     /**
@@ -362,7 +364,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Nome", "E-mail", "Celular", "Telefone", "CEP", "Endereço", "Número", "Bairro", "Cidade", "Complemento", "UF", "RG", "CPF"
+                "Id", "Nome", "E-mail", "Celular", "Telefone", "CEP", "Endereço", "Número", "Bairro", "Cidade", "Complemento", "UF", "RG", "CPF", "Senha", "Cargo", "Nível"
             }
         ));
         tabelaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -492,8 +494,11 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         String bairro = txtBairro.getText();
         String cidade = txtCidade.getText();
         String estado = cbUf.getSelectedItem().toString();
+        String cargo = txtCargo.getText();
+        String senha = txtSenha.getText();
+        String nivelAcesso = cbNivel.getSelectedItem().toString();
 
-        Cliente cliente = new Cliente(
+        Funcionario funcionario = new Funcionario(
                 null,
                 nome,
                 rg,
@@ -507,14 +512,18 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                 complemento,
                 bairro,
                 cidade,
-                estado);
+                estado,
+                senha,
+                cargo,
+                nivelAcesso
+        );
 
-        dao.salvar(cliente);
+        dao.salvar(funcionario);
         Utilitarios.limpaTela(this.painelDados);
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        buscarDadosDoCliente();
+        buscarDadosDoFuncionario();
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
@@ -546,9 +555,9 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         try {
-            final List<Cliente> clientes = dao.listar("");
-            popularTabela(clientes);
-        } catch (ClientNotFoundException e) {
+            final List<Funcionario> funcionarios = dao.listar("");
+            popularTabela(funcionarios);
+        } catch (EmployeeNotFoundException e) {
             JOptionPane.showMessageDialog(
                     this,
                     e.getMessage(),
@@ -565,7 +574,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
 
     private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            buscarDadosDoCliente();
+            buscarDadosDoFuncionario();
         }
     }//GEN-LAST:event_txtNomeKeyPressed
 
@@ -610,8 +619,11 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         String cidade = txtCidade.getText();
         String estado = cbUf.getSelectedItem().toString();
         int id = Integer.parseInt(txtCodigo.getText());
+        String cargo = txtCargo.getText();
+        var senha = txtSenha.getText();
+        var nivelAcesso = cbNivel.getSelectedItem().toString();
 
-        Cliente cliente = new Cliente(
+        Funcionario funcionario = new Funcionario(
                 id,
                 nome,
                 rg,
@@ -625,9 +637,13 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                 complemento,
                 bairro,
                 cidade,
-                estado);
+                estado,
+                senha,
+                cargo,
+                nivelAcesso
+        );
 
-        dao.atualizar(cliente);
+        dao.atualizar(funcionario);
         Utilitarios.limpaTela(this.painelDados);
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -737,31 +753,31 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
 
-    private void popularCampos(Cliente cliente) {
-        txtNome.setText(cliente.getNome());
-        txtRg.setText(cliente.getRg());
-        txtCpf.setText(cliente.getCpf());
-        txtEmail.setText(cliente.getEmail());
-        txtTelefone.setText(cliente.getTelefone());
-        txtCelular.setText(cliente.getCelular());
-        txtCep.setText(cliente.getCep());
-        txtEndereco.setText(cliente.getEndereco());
-        txtNumero.setText(cliente.getNumero().toString());
-        txtComplemento.setText(cliente.getComplemento());
-        txtBairro.setText(cliente.getBairro());
-        txtCidade.setText(cliente.getCidade());
-        txtCodigo.setText(cliente.getId().toString());
-        cbUf.setSelectedItem(cliente.getEstado());
+    private void popularCampos(Funcionario funcionario) {
+        txtNome.setText(funcionario.getNome());
+        txtRg.setText(funcionario.getRg());
+        txtCpf.setText(funcionario.getCpf());
+        txtEmail.setText(funcionario.getEmail());
+        txtTelefone.setText(funcionario.getTelefone());
+        txtCelular.setText(funcionario.getCelular());
+        txtCep.setText(funcionario.getCep());
+        txtEndereco.setText(funcionario.getEndereco());
+        txtNumero.setText(funcionario.getNumero().toString());
+        txtComplemento.setText(funcionario.getComplemento());
+        txtBairro.setText(funcionario.getBairro());
+        txtCidade.setText(funcionario.getCidade());
+        txtCodigo.setText(funcionario.getId().toString());
+        cbUf.setSelectedItem(funcionario.getEstado());
     }
 
-    private void popularTabela(List<Cliente> clientes) {
+    private void popularTabela(List<Funcionario> funcionarios) {
 
         DefaultTableModel model = (DefaultTableModel) tabelaClientes.getModel();
 
         // limpa a tabela
         model.setRowCount(0);
 
-        for (Cliente c : clientes) {
+        for (Funcionario c : funcionarios) {
             model.addRow(new Object[]{
                 c.getId(),
                 c.getNome(),
@@ -776,27 +792,30 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                 c.getComplemento(),
                 c.getEstado(),
                 c.getRg(),
-                c.getCpf()
+                c.getCpf(),
+                c.getSenha(),
+                c.getCargo(),
+                c.getNivelAcesso()
             });
         }
     }
 
     private void carregarDadosNaTabela() {
         final String nome = txtPesquisaNome.getText();
-        final List<Cliente> clientes = dao.listar(nome);
-        popularTabela(clientes);
+        final List<Funcionario> funcionarios = dao.listar(nome);
+        popularTabela(funcionarios);
     }
 
-    private void buscarDadosDoCliente() {
+    private void buscarDadosDoFuncionario() {
         String nome = txtNome.getText();
         try {
             if (nome.isBlank()) {
                 throw new IllegalArgumentException("Preencha o nome para realizar a busca!");
             }
-            var cliente = dao.buscarCliente(nome)
+            var funcionario = dao.buscarFuncionario(nome)
                     .orElseThrow(() -> new ClientNotFoundException("Cliente não encontrado."));
 
-            popularCampos(cliente);
+            popularCampos(funcionario);
         } catch (ClientNotFoundException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro na Busca", JOptionPane.WARNING_MESSAGE);
             Utilitarios.limpaTela(this.painelDados);
