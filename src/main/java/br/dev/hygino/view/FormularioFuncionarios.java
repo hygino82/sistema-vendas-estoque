@@ -535,7 +535,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
             var result = dao.listar(nome);
             if (!result.isEmpty()) {
                 popularTabela(result);
-
+                //popularCampos(result.getFirst());//teste
             } else {
                 JOptionPane.showMessageDialog(
                         this,
@@ -600,7 +600,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         cbUf.setSelectedItem(getValue(row, 11));
         txtRg.setText(getValue(row, 12));
         txtCpf.setText(getValue(row, 13));
-        txtSenha.setText(getValue(row, 14));
+        txtSenha.setText("");//getValue(row, 14));
         txtCargo.setText(getValue(row, 15));
         cbNivel.setSelectedItem(getValue(row, 16));
 
@@ -760,6 +760,11 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         txtRg.setText(funcionario.getRg());
         txtCpf.setText(funcionario.getCpf());
         txtEmail.setText(funcionario.getEmail());
+
+        if (funcionario.getTelefone().isBlank()) {
+            throw new IllegalArgumentException("Telefone não informado");
+        }
+
         txtTelefone.setText(funcionario.getTelefone());
         txtCelular.setText(funcionario.getCelular());
         txtCep.setText(funcionario.getCep());
@@ -770,6 +775,10 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         txtCidade.setText(funcionario.getCidade());
         txtCodigo.setText(funcionario.getId().toString());
         cbUf.setSelectedItem(funcionario.getEstado());
+
+        cbNivel.setSelectedItem(funcionario.getNivelAcesso());
+        txtCargo.setText(funcionario.getCargo());
+        txtSenha.setText("");
     }
 
     private void popularTabela(List<Funcionario> funcionarios) {
@@ -816,7 +825,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
             }
             var funcionario = dao.buscarFuncionario(nome)
                     .orElseThrow(() -> new ClientNotFoundException("Cliente não encontrado."));
-
+            //funcionario.setSenha(null);//não retorna a senha com hash
             popularCampos(funcionario);
         } catch (ClientNotFoundException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro na Busca", JOptionPane.WARNING_MESSAGE);

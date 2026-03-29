@@ -95,7 +95,7 @@ public class FuncionarioDao {
                     funcionarioEncontrado.setCidade(rs.getString("cidade"));
                     funcionarioEncontrado.setEstado(rs.getString("estado"));
                     funcionarioEncontrado.setEndereco(rs.getString("endereco"));
-                    funcionarioEncontrado.setSenha(rs.getString("senha"));
+                    funcionarioEncontrado.setSenha(null);//rs.getString("senha"));
                     funcionarioEncontrado.setCargo(rs.getString("cargo"));
                     funcionarioEncontrado.setNivelAcesso(rs.getString("nivel_acesso"));
                     result = Optional.of(funcionarioEncontrado);
@@ -160,9 +160,27 @@ public class FuncionarioDao {
         }
     }
 
-    //todo fix update employee
     public void atualizar(Funcionario funcionario) {
-        final String senhaCriptografada = BCrypt.hashpw(funcionario.getSenha(), BCrypt.gensalt());
+        String senhaFinal;
+
+        Optional<Funcionario> existente = buscarFuncionarioPorId(funcionario.getId());
+
+        if (existente.isPresent()) {
+            String senhaDoBanco = existente.get().getSenha();
+
+            // verifica se a senha foi alterada
+            if (BCrypt.checkpw(funcionario.getSenha(), senhaDoBanco)) {
+                //System.out.println("Mesma senha!");
+                // mesma senha → mantém hash antigo
+                senhaFinal = senhaDoBanco;
+            } else {
+                // senha nova → gera novo hash
+                senhaFinal = BCrypt.hashpw(funcionario.getSenha(), BCrypt.gensalt());
+            }
+        } else {
+            // novo usuário → sempre criptografa
+            senhaFinal = BCrypt.hashpw(funcionario.getSenha(), BCrypt.gensalt());
+        }
 
         final var sql = """
             UPDATE tb_funcionarios
@@ -201,7 +219,7 @@ public class FuncionarioDao {
             stmt.setString(11, funcionario.getCidade());
             stmt.setString(12, funcionario.getEstado());
             stmt.setString(13, funcionario.getEndereco());
-            stmt.setString(14, senhaCriptografada);
+            stmt.setString(14, senhaFinal);
             stmt.setString(15, funcionario.getCargo());
             stmt.setString(16, funcionario.getNivelAcesso());
             stmt.setInt(17, funcionario.getId());
@@ -226,4 +244,44 @@ public class FuncionarioDao {
             JOptionPane.showMessageDialog(null, "Erro ao remover guncionário: " + e.getMessage());
         }
     }
+
+    private Optional<Funcionario> buscarFuncionarioPorId(int id) {
+        final var sql = """
+                  SELECT * FROM tb_funcionarios
+                  WHERE id = ?
+                  """;
+
+        Optional<Funcionario> result = Optional.empty();
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Funcionario funcionarioEncontrado = new Funcionario();
+                    funcionarioEncontrado.setId(rs.getInt("id"));
+                    funcionarioEncontrado.setNome(rs.getString("nome"));
+                    funcionarioEncontrado.setRg(rs.getString("rg"));
+                    funcionarioEncontrado.setCpf(rs.getString("cpf"));
+                    funcionarioEncontrado.setEmail(rs.getString("email"));
+                    funcionarioEncontrado.setTelefone(rs.getString("telefone"));
+                    funcionarioEncontrado.setCelular(rs.getString("celular"));
+                    funcionarioEncontrado.setCep(rs.getString("cep"));
+                    funcionarioEncontrado.setNumero(rs.getInt("numero"));
+                    funcionarioEncontrado.setComplemento(rs.getString("complemento"));
+                    funcionarioEncontrado.setBairro(rs.getString("bairro"));
+                    funcionarioEncontrado.setCidade(rs.getString("cidade"));
+                    funcionarioEncontrado.setEstado(rs.getString("estado"));
+                    funcionarioEncontrado.setEndereco(rs.getString("endereco"));
+                    funcionarioEncontrado.setSenha(rs.getString("senha"));
+                    funcionarioEncontrado.setCargo(rs.getString("cargo"));
+                    funcionarioEncontrado.setNivelAcesso(rs.getString("nivel_acesso"));
+                    result = Optional.of(funcionarioEncontrado);
+                }
+                return result;
+            }
+        } catch (SQLException e) {
+            throw new ClientNotFoundException("Erro ao buscar funcionario: " + e.getMessage() + "Erro no Banco de Dados");
+        }
+    }
+
 }
