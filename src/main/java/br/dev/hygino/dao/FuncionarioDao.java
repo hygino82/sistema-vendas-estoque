@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.swing.JOptionPane;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class FuncionarioDao {
 
@@ -24,7 +25,7 @@ public class FuncionarioDao {
 
         List<Funcionario> funcionarios = new ArrayList<>();
 
-        var sql = """
+        final var sql = """
         SELECT * FROM tb_funcionarios
         WHERE UPPER(nome) LIKE CONCAT('%', UPPER(?), '%')
         """;
@@ -107,6 +108,9 @@ public class FuncionarioDao {
     }
 
     public void salvar(Funcionario funcionario) {
+
+        final String senhaCriptografada = BCrypt.hashpw(funcionario.getSenha(), BCrypt.gensalt());
+
         final var sql = """
                    INSERT INTO tb_funcionarios(
                    nome,
@@ -143,7 +147,7 @@ public class FuncionarioDao {
             stmt.setString(11, funcionario.getCidade());
             stmt.setString(12, funcionario.getEstado());
             stmt.setString(13, funcionario.getEndereco());
-            stmt.setString(14, funcionario.getSenha());
+            stmt.setString(14, senhaCriptografada);
             stmt.setString(15, funcionario.getCargo());
             stmt.setString(16, funcionario.getNivelAcesso());
 
@@ -155,29 +159,32 @@ public class FuncionarioDao {
             JOptionPane.showMessageDialog(null, "Erro ao salvar funcionário: " + e.getMessage());
         }
     }
-    
+
     //todo fix update employee
     public void atualizar(Funcionario funcionario) {
+        final String senhaCriptografada = BCrypt.hashpw(funcionario.getSenha(), BCrypt.gensalt());
+
         final var sql = """
-                   INSERT INTO tb_funcionarios(
-                   nome,
-                   rg,
-                   cpf,
-                   email,
-                   telefone,
-                   celular,
-                   cep,
-                   numero,
-                   complemento,
-                   bairro,
-                   cidade,
-                   estado,
-                   endereco,
-                   senha,
-                   cargo,
-                   nivel_acesso)
-                   VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-                   """;
+            UPDATE tb_funcionarios
+            SET
+                nome = ?,
+                rg = ?,
+                cpf = ?,
+                email = ?,
+                telefone = ?,
+                celular = ?,
+                cep = ?,
+                numero = ?,
+                complemento = ?,
+                bairro = ?,
+                cidade = ?,
+                estado = ?,
+                endereco = ?,
+                senha = ?,
+                cargo = ?,
+                nivel_acesso = ?
+            WHERE id = ?
+            """;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             // 1. Atribuir os valores do objeto Cliente aos parâmetros da SQL
@@ -194,19 +201,20 @@ public class FuncionarioDao {
             stmt.setString(11, funcionario.getCidade());
             stmt.setString(12, funcionario.getEstado());
             stmt.setString(13, funcionario.getEndereco());
-            stmt.setString(14, funcionario.getSenha());
+            stmt.setString(14, senhaCriptografada);
             stmt.setString(15, funcionario.getCargo());
             stmt.setString(16, funcionario.getNivelAcesso());
+            stmt.setInt(17, funcionario.getId());
 
             // 2. Executar a consulta
             stmt.execute(); // ou stmt.executeUpdate() se você quiser saber quantas linhas foram afetadas
-            JOptionPane.showMessageDialog(null, "Funcionário " + funcionario.getNome() + " salvo com sucesso!");
+            JOptionPane.showMessageDialog(null, "Funcionário " + funcionario.getNome() + " atualizado com sucesso!");
             //closeConnection();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao salvar funcionário: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar funcionário: " + e.getMessage());
         }
     }
-    
+
     public void excluir(int id) {
         final var sql = "DELETE FROM tb_funcionarios WHERE id = ?";
 

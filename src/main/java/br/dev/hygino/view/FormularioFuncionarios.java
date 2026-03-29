@@ -600,30 +600,30 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         cbUf.setSelectedItem(getValue(row, 11));
         txtRg.setText(getValue(row, 12));
         txtCpf.setText(getValue(row, 13));
-        txtSenha.setText(getValue(row,14));
+        txtSenha.setText(getValue(row, 14));
         txtCargo.setText(getValue(row, 15));
         cbNivel.setSelectedItem(getValue(row, 16));
 
     }//GEN-LAST:event_tabelaClientesMouseClicked
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        String nome = txtNome.getText();
-        String cpf = txtCpf.getText();
-        String rg = txtRg.getText();
-        String email = txtEmail.getText();
-        String telefone = txtTelefone.getText();
-        String celular = txtCelular.getText();
-        String cep = txtCep.getText();
-        String endereco = txtEndereco.getText();
-        int numero = Integer.parseInt(txtNumero.getText());
-        String complemento = txtComplemento.getText();
-        String bairro = txtBairro.getText();
-        String cidade = txtCidade.getText();
-        String estado = cbUf.getSelectedItem().toString();
-        int id = Integer.parseInt(txtCodigo.getText());
-        String cargo = txtCargo.getText();
-        var senha = txtSenha.getText();
-        var nivelAcesso = cbNivel.getSelectedItem().toString();
+        final String nome = txtNome.getText();
+        final String cpf = txtCpf.getText();
+        final String rg = txtRg.getText();
+        final String email = txtEmail.getText();
+        final String telefone = txtTelefone.getText();
+        final String celular = txtCelular.getText();
+        final String cep = txtCep.getText();
+        final String endereco = txtEndereco.getText();
+        final int numero = Integer.parseInt(txtNumero.getText());
+        final String complemento = txtComplemento.getText();
+        final String bairro = txtBairro.getText();
+        final String cidade = txtCidade.getText();
+        final String estado = cbUf.getSelectedItem().toString();
+        final int id = Integer.parseInt(txtCodigo.getText());
+        final String cargo = txtCargo.getText();
+        final String senha = txtSenha.getText();
+        final String nivelAcesso = cbNivel.getSelectedItem().toString();
 
         Funcionario funcionario = new Funcionario(
                 id,
