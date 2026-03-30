@@ -36,7 +36,7 @@ public class FornecedorDao {
                    cidade,
                    estado,
                    endereco)
-                   VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)
+                   VALUES(?,?,?,?,?,?,?,?,?,?,?,?)
                    """;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
