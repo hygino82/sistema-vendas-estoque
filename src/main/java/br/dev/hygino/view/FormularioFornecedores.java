@@ -84,7 +84,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
         btnImprimir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Formulário de Clientes");
+        setTitle("Formulário de Fornecedores");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
