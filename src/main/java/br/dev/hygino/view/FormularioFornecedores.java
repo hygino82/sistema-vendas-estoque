@@ -1,7 +1,6 @@
 package br.dev.hygino.view;
 
 import br.dev.hygino.dao.FornecedorDao;
-import br.dev.hygino.exceptions.ClientNotFoundException;
 import br.dev.hygino.exceptions.ResourceNotFoundException;
 import br.dev.hygino.models.Fornecedor;
 import br.dev.hygino.utils.Utilitarios;
@@ -504,7 +503,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
                         "A lista está vazia!"
                 );
             }
-        } catch (ClientNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(
                     this,
                     e.getMessage(),
@@ -518,7 +517,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
         try {
             final List<Fornecedor> fornecedores = dao.listar("");
             popularTabela(fornecedores);
-        } catch (ClientNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(
                     this,
                     e.getMessage(),
@@ -756,7 +755,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
                     .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado."));
 
             popularCampos(fornecedor);
-        } catch (ClientNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro na Busca", JOptionPane.WARNING_MESSAGE);
             Utilitarios.limpaTela(this.painelDados);
         } catch (IllegalArgumentException e) {

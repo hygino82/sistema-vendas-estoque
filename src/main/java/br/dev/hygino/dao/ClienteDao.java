@@ -1,6 +1,6 @@
 package br.dev.hygino.dao;
 
-import br.dev.hygino.exceptions.ClientNotFoundException;
+import br.dev.hygino.exceptions.ResourceNotFoundException;
 import br.dev.hygino.jdbc.ConexaoBanco;
 import br.dev.hygino.models.Cliente;
 import java.util.List;
@@ -159,7 +159,7 @@ public class ClienteDao {
                 return result;
             }
         } catch (SQLException e) {
-            throw new ClientNotFoundException("Erro ao buscar cliente: " + e.getMessage() + "Erro no Banco de Dados");
+            throw new ResourceNotFoundException("Erro ao buscar cliente: " + e.getMessage() + "Erro no Banco de Dados");
         }
     }
 
@@ -202,7 +202,7 @@ public class ClienteDao {
             return clientes;
 
         } catch (SQLException e) {
-            throw new ClientNotFoundException(
+            throw new ResourceNotFoundException(
                     "Erro ao buscar clientes: " + e.getMessage()
             );
         }

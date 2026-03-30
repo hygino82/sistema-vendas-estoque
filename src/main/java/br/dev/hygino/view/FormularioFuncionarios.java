@@ -1,8 +1,7 @@
 package br.dev.hygino.view;
 
 import br.dev.hygino.dao.FuncionarioDao;
-import br.dev.hygino.exceptions.ClientNotFoundException;
-import br.dev.hygino.exceptions.EmployeeNotFoundException;
+import br.dev.hygino.exceptions.ResourceNotFoundException;
 import br.dev.hygino.models.Funcionario;
 import br.dev.hygino.utils.Utilitarios;
 import java.awt.HeadlessException;
@@ -542,7 +541,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                         "A lista está vazia!"
                 );
             }
-        } catch (ClientNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(
                     this,
                     e.getMessage(),
@@ -556,7 +555,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         try {
             final List<Funcionario> funcionarios = dao.listar("");
             popularTabela(funcionarios);
-        } catch (EmployeeNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(
                     this,
                     e.getMessage(),
@@ -824,10 +823,10 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                 throw new IllegalArgumentException("Preencha o nome para realizar a busca!");
             }
             var funcionario = dao.buscarFuncionario(nome)
-                    .orElseThrow(() -> new ClientNotFoundException("Cliente não encontrado."));
+                    .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado."));
             //funcionario.setSenha(null);//não retorna a senha com hash
             popularCampos(funcionario);
-        } catch (ClientNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro na Busca", JOptionPane.WARNING_MESSAGE);
             Utilitarios.limpaTela(this.painelDados);
         } catch (IllegalArgumentException e) {

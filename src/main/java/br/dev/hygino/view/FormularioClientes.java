@@ -1,7 +1,7 @@
 package br.dev.hygino.view;
 
 import br.dev.hygino.dao.ClienteDao;
-import br.dev.hygino.exceptions.ClientNotFoundException;
+import br.dev.hygino.exceptions.ResourceNotFoundException;
 import br.dev.hygino.models.Cliente;
 import br.dev.hygino.utils.Utilitarios;
 import java.awt.HeadlessException;
@@ -515,7 +515,7 @@ public class FormularioClientes extends javax.swing.JFrame {
                         "A lista está vazia!"
                 );
             }
-        } catch (ClientNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(
                     this,
                     e.getMessage(),
@@ -529,7 +529,7 @@ public class FormularioClientes extends javax.swing.JFrame {
         try {
             final List<Cliente> clientes = dao.listar("");
             popularTabela(clientes);
-        } catch (ClientNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(
                     this,
                     e.getMessage(),
@@ -770,10 +770,10 @@ public class FormularioClientes extends javax.swing.JFrame {
                 throw new IllegalArgumentException("Preencha o nome para realizar a busca!");
             }
             var cliente = dao.buscarCliente(nome)
-                    .orElseThrow(() -> new ClientNotFoundException("Cliente não encontrado."));
+                    .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado."));
 
             popularCampos(cliente);
-        } catch (ClientNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro na Busca", JOptionPane.WARNING_MESSAGE);
             Utilitarios.limpaTela(this.painelDados);
         } catch (IllegalArgumentException e) {

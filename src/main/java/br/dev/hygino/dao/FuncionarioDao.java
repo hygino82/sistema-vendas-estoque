@@ -1,6 +1,6 @@
 package br.dev.hygino.dao;
 
-import br.dev.hygino.exceptions.ClientNotFoundException;
+import br.dev.hygino.exceptions.ResourceNotFoundException;
 import br.dev.hygino.jdbc.ConexaoBanco;
 import br.dev.hygino.models.Funcionario;
 import java.sql.Connection;
@@ -62,7 +62,7 @@ public class FuncionarioDao {
             return funcionarios;
 
         } catch (SQLException e) {
-            throw new ClientNotFoundException(
+            throw new ResourceNotFoundException(
                     "Erro ao buscar funcionários: " + e.getMessage()
             );
         }
@@ -103,7 +103,7 @@ public class FuncionarioDao {
                 return result;
             }
         } catch (SQLException e) {
-            throw new ClientNotFoundException("Erro ao buscar funcionario: " + e.getMessage() + "Erro no Banco de Dados");
+            throw new ResourceNotFoundException("Erro ao buscar funcionario: " + e.getMessage() + "Erro no Banco de Dados");
         }
     }
 
@@ -280,8 +280,7 @@ public class FuncionarioDao {
                 return result;
             }
         } catch (SQLException e) {
-            throw new ClientNotFoundException("Erro ao buscar funcionario: " + e.getMessage() + "Erro no Banco de Dados");
+            throw new ResourceNotFoundException("Erro ao buscar funcionario: " + e.getMessage() + "Erro no Banco de Dados");
         }
     }
-
 }
