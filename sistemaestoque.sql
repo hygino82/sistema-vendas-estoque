@@ -50,7 +50,7 @@ CREATE TABLE `tb_clientes` (
 --
 
 INSERT INTO `tb_clientes` (`id`, `nome`, `rg`, `cpf`, `email`, `telefone`, `celular`, `cep`, `endereco`, `numero`, `complemento`, `bairro`, `cidade`, `estado`) VALUES
-(9, 'charlie', '22.222.222', '111.111.111-11', 'charlie@charliegmail.com', '(11) 1111 - 1111', '(11) 1 1111 - 1111', '11111-111', 'tv raimundinho', 1, 'casa', 'trançador', 'caxambu', 'MG'),
+(9, 'charlie', '22.222.222', '111.111.111-11', 'charlie@charliegmail.com', '(11)1111-1111', '(11)11111-1111', '11111-111', 'tv raimundinho', 1, 'casa', 'trançador', 'caxambu', 'MG'),
 (12, 'joao da silva', '11.111.111', '111.111.111-13', 'charlie@charliegmail.com', '(11) 1111 - 1111', '(11) 1 1111 - 1111', '11111-111', 'tv raimundinho', 1, 'casa', 'trançador', 'caxambu', 'MG'),
 (13, ' charlie rodrigues da silva', '11.111.111', '111.111.111-12', 'charlie@charliegmail.com', '(11) 1111 - 1111', '(11) 1 1111 - 1111', '11111-111', 'tv raimundinho', 1, 'casa', 'trançador', 'caxambu', 'MG'),
 (14, 'maria dos reis', '00.000.000', '111.111.111-14', '0000', '(00) 0000 - 0000', '(00) 0 0000 - 0000', '00000-000', '0000', 0, '00', 'vila verde', '0000', 'AC'),
@@ -109,7 +109,7 @@ CREATE TABLE `tb_funcionarios` (
   `rg` varchar(30) DEFAULT NULL,
   `cpf` varchar(20) DEFAULT NULL,
   `email` varchar(200) DEFAULT NULL,
-  `senha` varchar(10) DEFAULT NULL,
+  `senha` varchar(100) DEFAULT NULL,
   `cargo` varchar(100) DEFAULT NULL,
   `nivel_acesso` varchar(50) DEFAULT NULL,
   `telefone` varchar(30) DEFAULT NULL,

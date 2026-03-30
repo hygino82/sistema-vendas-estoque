@@ -1,10 +1,8 @@
 package br.dev.hygino.view;
 
-import br.dev.hygino.dao.ClienteDao;
 import br.dev.hygino.dao.FornecedorDao;
 import br.dev.hygino.exceptions.ClientNotFoundException;
 import br.dev.hygino.exceptions.ResourceNotFoundException;
-import br.dev.hygino.models.Cliente;
 import br.dev.hygino.models.Fornecedor;
 import br.dev.hygino.utils.Utilitarios;
 import java.awt.HeadlessException;
@@ -75,7 +73,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
         txtPesquisaNome = new javax.swing.JTextField();
         btnPesquisaNome = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaClientes = new javax.swing.JTable();
+        tabelaFornecedores = new javax.swing.JTable();
         jButton6 = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
@@ -319,7 +317,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
             }
         });
 
-        tabelaClientes.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaFornecedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -327,12 +325,12 @@ public class FormularioFornecedores extends javax.swing.JFrame {
                 "Id", "Nome", "CNPJ", "E-mail", "Celular", "Telefone", "CEP", "Endereço", "Número", "Bairro", "Cidade", "Complemento", "UF"
             }
         ));
-        tabelaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabelaFornecedores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaClientesMouseClicked(evt);
+                tabelaFornecedoresMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tabelaClientes);
+        jScrollPane1.setViewportView(tabelaFornecedores);
 
         javax.swing.GroupLayout painelConsultaLayout = new javax.swing.GroupLayout(painelConsulta);
         painelConsulta.setLayout(painelConsultaLayout);
@@ -486,7 +484,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        buscarDadosDoCliente();
+        buscarDadosDoFornecedor();
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
@@ -537,23 +535,24 @@ public class FormularioFornecedores extends javax.swing.JFrame {
 
     private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            buscarDadosDoCliente();
+            buscarDadosDoFornecedor();
         }
     }//GEN-LAST:event_txtNomeKeyPressed
 
-    private void tabelaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaClientesMouseClicked
-        int row = tabelaClientes.getSelectedRow();
+    private void tabelaFornecedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaFornecedoresMouseClicked
+        int row = tabelaFornecedores.getSelectedRow();
 
         if (row == -1) {
-            return; // nenhuma linha selecionada
+            return;
         }
 
         painelGuias.setSelectedIndex(0);
 
         txtCodigo.setText(getValue(row, 0));
+
         txtNome.setText(getValue(row, 1));
         txtCnpj.setText(getValue(row, 2));
-        txtEmail.setText(getValue(row, 3));
+        txtEmail.setText(getValue(row, 3)); 
         txtCelular.setText(getValue(row, 4));
         txtTelefone.setText(getValue(row, 5));
         txtCep.setText(getValue(row, 6));
@@ -563,7 +562,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
         txtCidade.setText(getValue(row, 10));
         txtComplemento.setText(getValue(row, 11));
         cbUf.setSelectedItem(getValue(row, 12));
-    }//GEN-LAST:event_tabelaClientesMouseClicked
+    }//GEN-LAST:event_tabelaFornecedoresMouseClicked
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         String nome = txtNome.getText();
@@ -619,7 +618,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private String getValue(int row, int column) {
-        Object value = tabelaClientes.getValueAt(row, column);
+        Object value = tabelaFornecedores.getValueAt(row, column);
         return value != null ? value.toString() : "";
     }
 
@@ -683,7 +682,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
     private javax.swing.JPanel painelConsulta;
     private javax.swing.JPanel painelDados;
     private javax.swing.JTabbedPane painelGuias;
-    private javax.swing.JTable tabelaClientes;
+    private javax.swing.JTable tabelaFornecedores;
     private javax.swing.JTextField txtBairro;
     private javax.swing.JFormattedTextField txtCelular;
     private javax.swing.JFormattedTextField txtCep;
@@ -704,7 +703,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
         txtCnpj.setText(fornecedor.getCnpj());
         txtEmail.setText(fornecedor.getEmail());
         txtTelefone.setText(fornecedor.getTelefone());
-        txtCelular.setText(fornecedor.getCelular());
+        txtCelular.setText(fornecedor.getCelular());  
         txtCep.setText(fornecedor.getCep());
         txtEndereco.setText(fornecedor.getEndereco());
         txtNumero.setText(fornecedor.getNumero().toString());
@@ -717,7 +716,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
 
     private void popularTabela(List<Fornecedor> fornecedores) {
 
-        DefaultTableModel model = (DefaultTableModel) tabelaClientes.getModel();
+        DefaultTableModel model = (DefaultTableModel) tabelaFornecedores.getModel();
 
         // limpa a tabela
         model.setRowCount(0);
@@ -747,7 +746,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
         popularTabela(fornecedores);
     }
 
-    private void buscarDadosDoCliente() {
+    private void buscarDadosDoFornecedor() {
         String nome = txtNome.getText();
         try {
             if (nome.isBlank()) {
@@ -761,7 +760,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro na Busca", JOptionPane.WARNING_MESSAGE);
             Utilitarios.limpaTela(this.painelDados);
         } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Atenção", JOptionPane.INFORMATION_MESSAGE); // Ajustei o tipo de mensagem
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Atenção", JOptionPane.INFORMATION_MESSAGE);
             Utilitarios.limpaTela(this.painelDados);
             txtNome.requestFocus();
         }

@@ -80,7 +80,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         txtPesquisaNome = new javax.swing.JTextField();
         btnPesquisaNome = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaClientes = new javax.swing.JTable();
+        tabelaFuncionarios = new javax.swing.JTable();
         btnNovo = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
@@ -358,7 +358,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
             }
         });
 
-        tabelaClientes.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaFuncionarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -366,12 +366,12 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
                 "Id", "Nome", "E-mail", "Celular", "Telefone", "CEP", "Endereço", "Número", "Bairro", "Cidade", "Complemento", "UF", "RG", "CPF", "Senha", "Cargo", "Nível"
             }
         ));
-        tabelaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabelaFuncionarios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaClientesMouseClicked(evt);
+                tabelaFuncionariosMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tabelaClientes);
+        jScrollPane1.setViewportView(tabelaFuncionarios);
 
         javax.swing.GroupLayout painelConsultaLayout = new javax.swing.GroupLayout(painelConsulta);
         painelConsulta.setLayout(painelConsultaLayout);
@@ -577,8 +577,8 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtNomeKeyPressed
 
-    private void tabelaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaClientesMouseClicked
-        int row = tabelaClientes.getSelectedRow();
+    private void tabelaFuncionariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaFuncionariosMouseClicked
+        int row = tabelaFuncionarios.getSelectedRow();
 
         if (row == -1) {
             return; // nenhuma linha selecionada
@@ -604,7 +604,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
         txtCargo.setText(getValue(row, 15));
         cbNivel.setSelectedItem(getValue(row, 16));
 
-    }//GEN-LAST:event_tabelaClientesMouseClicked
+    }//GEN-LAST:event_tabelaFuncionariosMouseClicked
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         final String nome = txtNome.getText();
@@ -669,7 +669,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private String getValue(int row, int column) {
-        Object value = tabelaClientes.getValueAt(row, column);
+        Object value = tabelaFuncionarios.getValueAt(row, column);
         return value != null ? value.toString() : "";
     }
 
@@ -736,7 +736,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
     private javax.swing.JPanel painelConsulta;
     private javax.swing.JPanel painelDados;
     private javax.swing.JTabbedPane painelGuias;
-    private javax.swing.JTable tabelaClientes;
+    private javax.swing.JTable tabelaFuncionarios;
     private javax.swing.JTextField txtBairro;
     private javax.swing.JTextField txtCargo;
     private javax.swing.JFormattedTextField txtCelular;
@@ -783,7 +783,7 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
 
     private void popularTabela(List<Funcionario> funcionarios) {
 
-        DefaultTableModel model = (DefaultTableModel) tabelaClientes.getModel();
+        DefaultTableModel model = (DefaultTableModel) tabelaFuncionarios.getModel();
 
         // limpa a tabela
         model.setRowCount(0);
