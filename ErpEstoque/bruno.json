@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "ErpEstoque",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

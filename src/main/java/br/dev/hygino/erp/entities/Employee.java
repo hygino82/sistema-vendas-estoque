@@ -26,51 +26,50 @@ public class Employee {
 
     @NotBlank
     @CPF
-    @Size(max = 14)
+    @Column(length = 14)
     private String cpf;
 
     @Email
-    @Column(unique = true)
-    @Size(max = 100)
+    @Column(unique = true, length = 100)
     private String email;
 
     @NotBlank
-    @Size(max = 20)
+    @Column(length = 20)
     private String phoneNumber;
 
     @NotBlank
-    @Size(max = 10)
+    @Column(length = 10)
     private String cep;
 
     @NotBlank
-    @Size(max = 100)
+    @Column(length = 100)
     private String address;
 
     @NotNull
-    @Size(max = 10)
+    @Column(length = 10)
     private Integer number;
 
     @Size(max = 20)
     private String addressComplement;
 
     @NotBlank
-    @Size(max = 40)
+    @Column(length = 40)
     private String neighborhood;
 
     @NotBlank
-    @Size(max = 40)
+    @Column(length = 40)
     private String city;
 
     @NotBlank
-    @Size(max = 40)
+    @Column(length = 40)
     private String jobTitle;
 
     @NotBlank
-    @Size(max = 40)
+    @Column(length = 40)
     private String state;
 
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Column(length = 40)
     private String password;
 
     @NotNull
@@ -79,6 +78,23 @@ public class Employee {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public Employee(String name, String cpf, String email, String phoneNumber, String cep, String address, Integer number, String addressComplement, String neighborhood, String city, String jobTitle, String state, String password, br.dev.hygino.erp.entities.AccessLevel accessLevel) {
+        this.name = name;
+        this.cpf = cpf;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.cep = cep;
+        this.address = address;
+        this.number = number;
+        this.addressComplement = addressComplement;
+        this.neighborhood = neighborhood;
+        this.city = city;
+        this.jobTitle = jobTitle;
+        this.state = state;
+        this.password = password;
+        this.accessLevel = accessLevel;
+    }
 
     @PrePersist
     private void create() {

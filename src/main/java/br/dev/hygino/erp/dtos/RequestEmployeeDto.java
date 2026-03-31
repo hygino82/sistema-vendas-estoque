@@ -1,6 +1,7 @@
 package br.dev.hygino.erp.dtos;
 
 import br.dev.hygino.erp.entities.AccessLevel;
+import br.dev.hygino.erp.entities.Employee;
 
 public record RequestEmployeeDto(
         String name,
@@ -18,4 +19,23 @@ public record RequestEmployeeDto(
         String password,
         AccessLevel accessLevel
         ) {
+
+    public Employee toEmployeeEntity() {
+        return new Employee(
+                name,
+                cpf,
+                email,
+                phoneNumber,
+                cep,
+                address,
+                number,
+                addressComplement,
+                neighborhood,
+                city,
+                jobTitle,
+                state,
+                password,
+                accessLevel
+        );
+    }
 }
