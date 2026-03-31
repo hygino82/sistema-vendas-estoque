@@ -1,0 +1,20 @@
+meta {
+  name: Get employees
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{HOST}}/employee?state=PR
+  body: none
+  auth: inherit
+}
+
+params:query {
+  state: PR
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

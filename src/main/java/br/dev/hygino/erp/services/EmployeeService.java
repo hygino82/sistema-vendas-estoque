@@ -6,8 +6,13 @@ import br.dev.hygino.erp.entities.Employee;
 import org.springframework.stereotype.Repository;
 
 import br.dev.hygino.erp.repository.EmployeeRepository;
+import br.dev.hygino.erp.services.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
@@ -55,5 +60,19 @@ public class EmployeeService {
         //TODO adicionar criptografia
         entity.setPassword(dto.password()); // Lembre-se de tratar a senha (criptografar) antes de salvar!
         entity.setAccessLevel(dto.accessLevel());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ResponseEmployeeDto> getEmployees(Pageable pageable, String name, String state, String city) {
+        final var page = employeeRepository.getEmployees(pageable, name, state, city);
+        return page.map(ResponseEmployeeDto::new);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEmployeeDto getEmployeeByEmail(@Email @NotBlank String email) {
+        final var result = employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found!"));
+
+        return new ResponseEmployeeDto(result);
     }
 }

@@ -1,18 +1,17 @@
 package br.dev.hygino.erp.controllers;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import br.dev.hygino.erp.dtos.RequestEmployeeDto;
 import br.dev.hygino.erp.dtos.ResponseEmployeeDto;
 import br.dev.hygino.erp.services.EmployeeService;
+import br.dev.hygino.erp.services.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.data.domain.*;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/employee")
@@ -30,6 +29,27 @@ public class EmployeeController {
     @PutMapping("/{id}")
     public ResponseEntity<ResponseEmployeeDto> updateEmployee(@RequestBody @Valid RequestEmployeeDto dto, @PathVariable long id) {
         var result = service.update(dto, id);
+        return ResponseEntity.status(200).body(result);
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<?> findEmployeeByEmail(@PathVariable @NotBlank @Email String email) {
+        try {
+            var result = service.getEmployeeByEmail(email);
+            return ResponseEntity.status(200).body(result);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ResponseEmployeeDto>> getEmployees(
+            Pageable pageable,
+            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "") String city,
+            @RequestParam(defaultValue = "") String state
+    ) {
+        var result = service.getEmployees(pageable, name, state, city);
         return ResponseEntity.status(200).body(result);
     }
 }
