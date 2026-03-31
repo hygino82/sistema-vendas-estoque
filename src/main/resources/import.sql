@@ -1,0 +1,1 @@
+INSERT INTO tb_employee(name,cpf,email,password,address,address_complement,number,city,job_title,neighborhood,state,phone_number,cep,created_at,updated_at,access_level) VALUES ('João da Silva','123.456.789-00','joao.silva@email.com','senha123','Rua das Flores','Apto 101','123','Curitiba','Desenvolvedor Backend','Centro','PR','(41) 99999-9999','80000-000',NOW(),NOW(),'ADMIN')
