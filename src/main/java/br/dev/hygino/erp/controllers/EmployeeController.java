@@ -11,6 +11,8 @@ import br.dev.hygino.erp.dtos.ResponseEmployeeDto;
 import br.dev.hygino.erp.services.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("api/v1/employee")
@@ -23,5 +25,11 @@ public class EmployeeController {
     public ResponseEntity<ResponseEmployeeDto> createEmployee(@RequestBody @Valid RequestEmployeeDto dto) {
         var result = service.insert(dto);
         return ResponseEntity.status(201).body(result);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseEmployeeDto> updateEmployee(@RequestBody @Valid RequestEmployeeDto dto, @PathVariable long id) {
+        var result = service.update(dto, id);
+        return ResponseEntity.status(200).body(result);
     }
 }

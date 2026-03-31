@@ -1,0 +1,35 @@
+meta {
+  name: Update
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{HOST}}/employee/1
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Mariana Costa",
+    "email": "mari.costa@email.com",
+    "address": "Avenida Brasil",
+    "addressComplement": "Apto 302",
+    "number": 1500,
+    "cpf": "554.717.364-94",
+    "phoneNumber": "(11)91234-5678",
+    "cep": "01310-200",
+    "neighborhood": "Bela Vista",
+    "city": "São Paulo",
+    "state": "SP",
+    "jobTitle": "Analista de Sistemas",
+    "password": "outrasenha456",
+    "accessLevel": "USER"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
