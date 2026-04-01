@@ -1,17 +1,13 @@
 meta {
-  name: Get employees
+  name: Delete
   type: http
-  seq: 4
+  seq: 5
 }
 
-get {
-  url: {{HOST}}/employee
+delete {
+  url: {{HOST}}/employee/1
   body: none
   auth: inherit
-}
-
-params:query {
-  ~state: PR
 }
 
 settings {

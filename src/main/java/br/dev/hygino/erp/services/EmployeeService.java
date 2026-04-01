@@ -25,7 +25,7 @@ public class EmployeeService {
     public ResponseEmployeeDto insert(@Valid RequestEmployeeDto dto) {
         Employee employee = new Employee();
         dtoToEntity(dto, employee);
-        //TODO adicionar criptografia
+        // TODO adicionar criptografia
         employee = employeeRepository.save(employee);
         return new ResponseEmployeeDto(employee);
     }
@@ -57,7 +57,7 @@ public class EmployeeService {
 
         // Dados Profissionais e de Acesso
         entity.setJobTitle(dto.jobTitle());
-        //TODO adicionar criptografia
+        // TODO adicionar criptografia
         entity.setPassword(dto.password()); // Lembre-se de tratar a senha (criptografar) antes de salvar!
         entity.setAccessLevel(dto.accessLevel());
     }
@@ -74,5 +74,12 @@ public class EmployeeService {
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found!"));
 
         return new ResponseEmployeeDto(result);
+    }
+
+    public void delete(long id) {
+        if (!employeeRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Employee not found!");
+        }
+        employeeRepository.deleteById(id);
     }
 }

@@ -27,7 +27,8 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseEmployeeDto> updateEmployee(@RequestBody @Valid RequestEmployeeDto dto, @PathVariable long id) {
+    public ResponseEntity<ResponseEmployeeDto> updateEmployee(@RequestBody @Valid RequestEmployeeDto dto,
+            @PathVariable long id) {
         var result = service.update(dto, id);
         return ResponseEntity.status(200).body(result);
     }
@@ -47,9 +48,18 @@ public class EmployeeController {
             Pageable pageable,
             @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "") String city,
-            @RequestParam(defaultValue = "") String state
-    ) {
+            @RequestParam(defaultValue = "") String state) {
         var result = service.getEmployees(pageable, name, state, city);
         return ResponseEntity.status(200).body(result);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable long id) {
+        try {
+            service.delete(id);
+            return ResponseEntity.status(204).build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
     }
 }
