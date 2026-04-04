@@ -1,0 +1,32 @@
+meta {
+  name: Insert
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{HOST}}/client
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Gorete Medeiros",
+    "email": "goretinha@email.com.br",
+    "address": "Rua da liberdade",
+    "addressComplement": "Casa",
+    "number": 605,
+    "cpf": "529.982.247-25",
+    "phoneNumber": "(46)98745-1087",
+    "cep": "85550-000",
+    "neighborhood": "Centro",
+    "city": "Coronel Vivida",
+    "state": "Paraná"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

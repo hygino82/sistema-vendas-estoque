@@ -10,8 +10,8 @@ import org.hibernate.validator.constraints.br.CPF;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_employee")
-public class Employee {
+@Table(name = "tb_client")
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,40 +60,11 @@ public class Employee {
 
     @NotBlank
     @Column(length = 40)
-    private String jobTitle;
-
-    @NotBlank
-    @Column(length = 40)
     private String state;
-
-    @NotBlank
-    @Column(length = 40)
-    private String password;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private AccessLevel accessLevel;
-
+    
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    public Employee(String name, String cpf, String email, String phoneNumber, String cep, String address, Integer number, String addressComplement, String neighborhood, String city, String jobTitle, String state, String password, br.dev.hygino.erp.entities.AccessLevel accessLevel) {
-        this.name = name;
-        this.cpf = cpf;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.cep = cep;
-        this.address = address;
-        this.number = number;
-        this.addressComplement = addressComplement;
-        this.neighborhood = neighborhood;
-        this.city = city;
-        this.jobTitle = jobTitle;
-        this.state = state;
-        this.password = password;
-        this.accessLevel = accessLevel;
-    }
-
+    
     @PrePersist
     private void create() {
         createdAt = LocalDateTime.now();

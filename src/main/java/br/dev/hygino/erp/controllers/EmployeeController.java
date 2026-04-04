@@ -27,7 +27,8 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseEmployeeDto> updateEmployee(@RequestBody @Valid RequestEmployeeDto dto,
+    public ResponseEntity<ResponseEmployeeDto> updateEmployee(
+            @RequestBody @Valid RequestEmployeeDto dto,
             @PathVariable long id) {
         var result = service.update(dto, id);
         return ResponseEntity.status(200).body(result);
