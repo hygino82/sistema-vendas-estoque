@@ -67,13 +67,13 @@ public class FormularioFornecedores extends javax.swing.JFrame {
         txtCnpj = new javax.swing.JFormattedTextField();
         jLabel15 = new javax.swing.JLabel();
         txtComplemento = new javax.swing.JTextField();
+        jButton6 = new javax.swing.JButton();
         painelConsulta = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         txtPesquisaNome = new javax.swing.JTextField();
         btnPesquisaNome = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaFornecedores = new javax.swing.JTable();
-        jButton6 = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
@@ -181,6 +181,8 @@ public class FormularioFornecedores extends javax.swing.JFrame {
 
         jLabel15.setText("Complemento:");
 
+        jButton6.setText("NOVO");
+
         javax.swing.GroupLayout painelDadosLayout = new javax.swing.GroupLayout(painelDados);
         painelDados.setLayout(painelDadosLayout);
         painelDadosLayout.setHorizontalGroup(
@@ -243,7 +245,9 @@ public class FormularioFornecedores extends javax.swing.JFrame {
                     .addGroup(painelDadosLayout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addGap(18, 18, 18)
-                        .addComponent(txtCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(114, 114, 114)
+                        .addComponent(jButton6))
                     .addGroup(painelDadosLayout.createSequentialGroup()
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -294,7 +298,8 @@ public class FormularioFornecedores extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton6))
                 .addGap(0, 138, Short.MAX_VALUE))
         );
 
@@ -363,8 +368,6 @@ public class FormularioFornecedores extends javax.swing.JFrame {
 
         painelGuias.addTab("Consulta de fornecedores", painelConsulta);
 
-        jButton6.setText("NOVO");
-
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/novo.png"))); // NOI18N
         btnNovo.setText("NOVO");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -405,7 +408,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(painelGuias)
+            .addComponent(painelGuias, javax.swing.GroupLayout.DEFAULT_SIZE, 1729, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(56, 56, 56)
                 .addComponent(btnNovo)
@@ -418,11 +421,6 @@ public class FormularioFornecedores extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnImprimir)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(373, 373, 373)
-                    .addComponent(jButton6)
-                    .addContainerGap(1284, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -438,11 +436,6 @@ public class FormularioFornecedores extends javax.swing.JFrame {
                     .addComponent(btnExcluir)
                     .addComponent(btnImprimir))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(314, 314, 314)
-                    .addComponent(jButton6)
-                    .addContainerGap(281, Short.MAX_VALUE)))
         );
 
         pack();
