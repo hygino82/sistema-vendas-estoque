@@ -1,0 +1,29 @@
+package br.dev.hygino.erp.controllers;
+
+import java.net.URI;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.dev.hygino.erp.dtos.RequestSupplierDto;
+import br.dev.hygino.erp.dtos.ResponseSupplierDto;
+import br.dev.hygino.erp.services.SupplierService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/supplier")
+public class SupplierController {
+    private final SupplierService supplierService;
+
+    @PostMapping
+    public ResponseEntity<ResponseSupplierDto> createSupplier(@RequestBody @Valid RequestSupplierDto dto) {
+        ResponseSupplierDto response = supplierService.insert(dto);
+        URI uri = URI.create("/api/v1/supplier/" + response.id());
+        return ResponseEntity.created(uri).body(response);
+    }
+}

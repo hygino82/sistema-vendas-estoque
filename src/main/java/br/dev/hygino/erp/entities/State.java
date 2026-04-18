@@ -1,0 +1,41 @@
+package br.dev.hygino.erp.entities;
+
+public enum State {
+    AM, AC, AL, AP, BA, CE, DF, ES, GO, MA, MT, MS, MG, PA, PB, PR, PE, PI, RJ, RN, RS, RO, RR, SC, SP, SE, TO;
+
+    public static State fromString(String sigla) {
+        return State.valueOf(sigla.toUpperCase());
+    }
+
+    public String getFullName() {
+        return switch (this) {
+            case AM -> "Amazonas";
+            case AC -> "Acre";
+            case AL -> "Alagoas";
+            case AP -> "Amapá";
+            case BA -> "Bahia";
+            case CE -> "Ceará";
+            case DF -> "Distrito Federal";
+            case ES -> "Espírito Santo";
+            case GO -> "Goiás";
+            case MA -> "Maranhão";
+            case MT -> "Mato Grosso";
+            case MS -> "Mato Grosso do Sul";
+            case MG -> "Minas Gerais";
+            case PA -> "Pará";
+            case PB -> "Paraíba";
+            case PR -> "Paraná";
+            case PE -> "Pernambuco";
+            case PI -> "Piauí";
+            case RJ -> "Rio de Janeiro";
+            case RN -> "Rio Grande do Norte";
+            case RS -> "Rio Grande do Sul";
+            case RO -> "Rondônia";
+            case RR -> "Roraima";
+            case SC -> "Santa Catarina";
+            case SP -> "São Paulo";
+            case SE -> "Sergipe";
+            case TO -> "Tocantins";
+        };
+    }
+}
