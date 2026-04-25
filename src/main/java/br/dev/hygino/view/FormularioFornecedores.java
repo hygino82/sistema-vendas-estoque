@@ -16,13 +16,22 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FormularioFornecedores extends javax.swing.JFrame {
 
+    private static FormularioFornecedores instance;
+
+    public static FormularioFornecedores getInstance() {
+        if (instance == null) {
+            instance = new FormularioFornecedores();
+        }
+
+        return instance;
+    }
+    
     private final FornecedorDao dao;
-    // private List<Cliente> clientes;
 
     /**
      * Creates new form FormularioClientes
      */
-    public FormularioFornecedores() {
+    private FormularioFornecedores() {
         initComponents();
         dao = new FornecedorDao();
     }
@@ -544,7 +553,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
 
         txtNome.setText(getValue(row, 1));
         txtCnpj.setText(getValue(row, 2));
-        txtEmail.setText(getValue(row, 3)); 
+        txtEmail.setText(getValue(row, 3));
         txtCelular.setText(getValue(row, 4));
         txtTelefone.setText(getValue(row, 5));
         txtCep.setText(getValue(row, 6));
@@ -695,7 +704,7 @@ public class FormularioFornecedores extends javax.swing.JFrame {
         txtCnpj.setText(fornecedor.getCnpj());
         txtEmail.setText(fornecedor.getEmail());
         txtTelefone.setText(fornecedor.getTelefone());
-        txtCelular.setText(fornecedor.getCelular());  
+        txtCelular.setText(fornecedor.getCelular());
         txtCep.setText(fornecedor.getCep());
         txtEndereco.setText(fornecedor.getEndereco());
         txtNumero.setText(fornecedor.getNumero().toString());

@@ -15,14 +15,24 @@ import javax.swing.table.DefaultTableModel;
  * @author hygino
  */
 public class FormularioClientes extends javax.swing.JFrame {
+//Singleton for create a unique instance of FormularioClientes
 
+    private static FormularioClientes instance;
+
+    public static FormularioClientes getInstance() {
+        if (instance == null) {
+            instance = new FormularioClientes();
+        }
+
+        return instance;
+    }
+    
     private final ClienteDao dao;
-    // private List<Cliente> clientes;
 
     /**
      * Creates new form FormularioClientes
      */
-    public FormularioClientes() {
+    private FormularioClientes() {
         initComponents();
         dao = new ClienteDao();
     }

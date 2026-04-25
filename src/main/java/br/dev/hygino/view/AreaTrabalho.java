@@ -7,13 +7,14 @@ package br.dev.hygino.view;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author hygino
  */
 public class AreaTrabalho extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AreaTrabalho.class.getName());
 
     /**
@@ -62,6 +63,7 @@ public class AreaTrabalho extends javax.swing.JFrame {
         jMenuItem10 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Área de trabalho");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
@@ -94,6 +96,7 @@ public class AreaTrabalho extends javax.swing.JFrame {
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         jMenuItem2.setText("Formulário de funcionários");
+        jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
         jMenu2.add(jMenuItem2);
 
         jMenuBar1.add(jMenu2);
@@ -103,6 +106,7 @@ public class AreaTrabalho extends javax.swing.JFrame {
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         jMenuItem3.setText("Formulário de fornecedores");
+        jMenuItem3.addActionListener(this::jMenuItem3ActionPerformed);
         jMenu3.add(jMenuItem3);
 
         jMenuBar1.add(jMenu3);
@@ -178,12 +182,23 @@ public class AreaTrabalho extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+        SwingUtilities.invokeLater(() -> FormularioClientes.getInstance()
+                .setVisible(true));
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         this.setExtendedState(this.MAXIMIZED_BOTH);
     }//GEN-LAST:event_formWindowActivated
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        SwingUtilities.invokeLater(() ->  FormularioFuncionarios.getInstance()
+                .setVisible(true));
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        SwingUtilities.invokeLater(() ->  FormularioFornecedores.getInstance()
+                .setVisible(true));
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments

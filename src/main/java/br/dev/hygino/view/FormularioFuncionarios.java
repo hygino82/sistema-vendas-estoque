@@ -16,13 +16,22 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FormularioFuncionarios extends javax.swing.JFrame {
 
+    private static FormularioFuncionarios instance;
+
+    public static FormularioFuncionarios getInstance() {
+        if (instance == null) {
+            instance = new FormularioFuncionarios();
+        }
+
+        return instance;
+    }
+
     private final FuncionarioDao dao;
-    // private List<Cliente> clientes;
 
     /**
      * Creates new form FormularioClientes
      */
-    public FormularioFuncionarios() {
+    private FormularioFuncionarios() {
         initComponents();
         dao = new FuncionarioDao();
     }
