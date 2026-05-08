@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package br.dev.hygino.view;
 
 import java.awt.Graphics;
@@ -15,12 +11,22 @@ import javax.swing.SwingUtilities;
  */
 public class AreaTrabalho extends javax.swing.JFrame {
 
+    private static AreaTrabalho instance;
+
+    public static AreaTrabalho getInstance() {
+        if (instance == null) {
+            instance = new AreaTrabalho();
+        }
+
+        return instance;
+    }
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AreaTrabalho.class.getName());
 
     /**
      * Creates new form AreaTrabalho
      */
-    public AreaTrabalho() {
+    private AreaTrabalho() {
         initComponents();
     }
 
@@ -191,12 +197,12 @@ public class AreaTrabalho extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        SwingUtilities.invokeLater(() ->  FormularioFuncionarios.getInstance()
+        SwingUtilities.invokeLater(() -> FormularioFuncionarios.getInstance()
                 .setVisible(true));
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        SwingUtilities.invokeLater(() ->  FormularioFornecedores.getInstance()
+        SwingUtilities.invokeLater(() -> FormularioFornecedores.getInstance()
                 .setVisible(true));
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 

@@ -280,7 +280,61 @@ public class FuncionarioDao {
                 return result;
             }
         } catch (SQLException e) {
-            throw new ResourceNotFoundException("Erro ao buscar funcionario: " + e.getMessage() + "Erro no Banco de Dados");
+            throw new ResourceNotFoundException("Erro ao buscar funcionário: " + e.getMessage() + "Erro no Banco de Dados");
+        }
+    }
+
+    public Optional<Funcionario> login(String email, String senha) {
+
+        final var sql = """
+            SELECT * FROM tb_funcionarios
+            WHERE email = ?
+            """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                if (rs.next()) {
+
+                    String senhaBanco = rs.getString("senha");
+
+                    // verifica senha
+                    if (BCrypt.checkpw(senha, senhaBanco)) {
+
+                        Funcionario funcionarioEncontrado = new Funcionario();
+
+                        funcionarioEncontrado.setId(rs.getInt("id"));
+                        funcionarioEncontrado.setNome(rs.getString("nome"));
+                        funcionarioEncontrado.setRg(rs.getString("rg"));
+                        funcionarioEncontrado.setCpf(rs.getString("cpf"));
+                        funcionarioEncontrado.setEmail(rs.getString("email"));
+                        funcionarioEncontrado.setTelefone(rs.getString("telefone"));
+                        funcionarioEncontrado.setCelular(rs.getString("celular"));
+                        funcionarioEncontrado.setCep(rs.getString("cep"));
+                        funcionarioEncontrado.setNumero(rs.getInt("numero"));
+                        funcionarioEncontrado.setComplemento(rs.getString("complemento"));
+                        funcionarioEncontrado.setBairro(rs.getString("bairro"));
+                        funcionarioEncontrado.setCidade(rs.getString("cidade"));
+                        funcionarioEncontrado.setEstado(rs.getString("estado"));
+                        funcionarioEncontrado.setEndereco(rs.getString("endereco"));
+                        funcionarioEncontrado.setSenha(senhaBanco);
+                        funcionarioEncontrado.setCargo(rs.getString("cargo"));
+                        funcionarioEncontrado.setNivelAcesso(rs.getString("nivel_acesso"));
+
+                        return Optional.of(funcionarioEncontrado);
+                    }
+                }
+
+                return Optional.empty();
+            }
+
+        } catch (SQLException e) {
+            throw new ResourceNotFoundException(
+                    "Erro ao buscar funcionário: " + e.getMessage()
+            );
         }
     }
 }

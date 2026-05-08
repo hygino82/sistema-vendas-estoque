@@ -1,11 +1,18 @@
 package br.dev.hygino.view;
 
+import br.dev.hygino.dao.FuncionarioDao;
+import br.dev.hygino.exceptions.ResourceNotFoundException;
+import br.dev.hygino.models.Funcionario;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author hygino
  */
 public class FormularioLogin extends javax.swing.JFrame {
 
+    private final FuncionarioDao funcionarioDao;
     private static FormularioLogin instance;
 
     public FormularioLogin getInstance() {
@@ -20,6 +27,7 @@ public class FormularioLogin extends javax.swing.JFrame {
      */
     private FormularioLogin() {
         initComponents();
+        funcionarioDao = new FuncionarioDao();
     }
 
     /**
@@ -40,7 +48,7 @@ public class FormularioLogin extends javax.swing.JFrame {
         btnEntrar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Login");
         setResizable(false);
 
@@ -77,6 +85,11 @@ public class FormularioLogin extends javax.swing.JFrame {
         btnEntrar.setFont(new java.awt.Font("Hack Nerd Font", 1, 17)); // NOI18N
         btnEntrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/Login_48x48.png"))); // NOI18N
         btnEntrar.setText("Entrar");
+        btnEntrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntrarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setFont(new java.awt.Font("Hack Nerd Font", 1, 17)); // NOI18N
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/Login_Cancel_48x48.png"))); // NOI18N
@@ -136,6 +149,29 @@ public class FormularioLogin extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
+        final String email = txtEmail.getText();
+        final String senha = txtSenha.getText();
+
+        try {
+            var result = funcionarioDao.login(email, senha);
+
+            if (result.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Dados Inválidos");
+                txtEmail.setText("");
+                txtSenha.setText("");
+                return;
+            }
+
+            JOptionPane.showMessageDialog(null, "Bem vindo ao sistema");
+            dispose();//fecha a janela de login
+
+            SwingUtilities.invokeLater(() -> AreaTrabalho.getInstance().setVisible(true));
+        } catch (ResourceNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_btnEntrarActionPerformed
 
     /**
      * @param args the command line arguments
