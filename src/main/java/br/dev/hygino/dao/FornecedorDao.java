@@ -1,5 +1,6 @@
 package br.dev.hygino.dao;
 
+import br.dev.hygino.dto.FornecedorMinDto;
 import br.dev.hygino.exceptions.ResourceNotFoundException;
 import br.dev.hygino.jdbc.ConexaoBanco;
 import br.dev.hygino.models.Fornecedor;
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 public class FornecedorDao {
@@ -193,6 +195,34 @@ public class FornecedorDao {
             //closeConnection();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao editar fornecedor: " + e.getMessage());
+        }
+    }
+
+    public List<FornecedorMinDto> listarFornecedoresCadastrados() {
+
+        List<FornecedorMinDto> fornecedores = new ArrayList<>();
+        
+        var sql = """
+                    SELECT id, nome
+                    FROM tb_fornecedores
+                  """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                FornecedorMinDto fornecedor = new FornecedorMinDto(rs.getInt("id"), rs.getString("nome"));
+
+                fornecedores.add(fornecedor);
+            }
+
+            return fornecedores;
+
+        } catch (SQLException e) {
+            throw new ResourceNotFoundException(
+                    "Erro ao buscar fornecedores: " + e.getMessage()
+            );
         }
     }
 }

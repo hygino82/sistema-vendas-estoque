@@ -9,37 +9,38 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 public class TestarConexao {
-
+    
     public static void main(String[] args) throws SQLException {
-
-        excluirProduto();
+        
+       // buscarFornecedores();
+        //excluirProduto();
         //buscarProdutos();
         //adicionarProduto();
         //adicionarCliente();
     }
-
+    
     private static void adicionarProduto() {
-
+        
         try {
             new ConexaoBanco().getConnection();
             JOptionPane.showMessageDialog(null, "Conectado com sucesso ao banco de dados!");
-
+            
             Produto p1 = new Produto(null, "Salame Colonial", 34.99, 7, 3);
-
+            
             final ProdutoDao dao = new ProdutoDao();
-
+            
             dao.salvar(p1);
-
+            
         } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(null, "Erro ao tentar se conectar com o banco de dados!\n" + e.getMessage());
         }
     }
-
+    
     private static void adicionarCliente() {
         try {
             new ConexaoBanco().getConnection();
             JOptionPane.showMessageDialog(null, "Conectado com sucesso ao banco de dados!");
-
+            
             Cliente c1 = new Cliente(
                     null,
                     "Juvenal Silva",
@@ -55,32 +56,40 @@ public class TestarConexao {
                     "Primavera",
                     "Coronel Vivida",
                     "PR");
-
+            
             final ClienteDao dao = new ClienteDao();
-
+            
             dao.salvar(c1);
-
+            
         } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(null, "Erro ao tentar se conectar com o banco de dados!\n" + e.getMessage());
         }
     }
-
+    
     private static void buscarProdutos() {
         try {
             new ConexaoBanco().getConnection();
-
+            
             final ProdutoDao dao = new ProdutoDao();
             final var res = dao.listar("");
-
+            
             res.forEach(System.out::println);
-
+            
         } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(null, "Erro ao tentar se conectar com o banco de dados!\n" + e.getMessage());
         }
     }
-
+    
     private static void excluirProduto() {
         final ProdutoDao dao = new ProdutoDao();
         dao.excluir(11);
     }
+    
+   /* private static void buscarFornecedores() {
+        final var dao = new FornecedorDao();
+        
+        final Map<Integer, String> result = dao.listarFornecedoresCadastrados();
+        
+        result.forEach((cod, nome) -> System.out.println(cod + " : " + nome));
+    }  */
 }

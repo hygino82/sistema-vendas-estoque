@@ -1,14 +1,16 @@
 package br.dev.hygino.view;
 
-import br.dev.hygino.dao.ClienteDao;
+import br.dev.hygino.dao.FornecedorDao;
 import br.dev.hygino.dao.ProdutoDao;
+import br.dev.hygino.dto.FornecedorMinDto;
 import br.dev.hygino.exceptions.ResourceNotFoundException;
-import br.dev.hygino.models.Cliente;
 import br.dev.hygino.models.Produto;
 import br.dev.hygino.utils.Utilitarios;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.Map;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,7 +19,9 @@ import javax.swing.table.DefaultTableModel;
  * @author hygino
  */
 public class FormularioProdutos extends javax.swing.JFrame {
-//Singleton for create a unique instance of FormularioClientes
+
+    Map<Integer, String> fornecedores;
+    //Singleton for create a unique instance of FormularioClientes
 
     private static FormularioProdutos instance;
 
@@ -30,6 +34,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
     }
 
     private final ProdutoDao dao;
+    private final FornecedorDao fornecedorDao;
 
     /**
      * Creates new form FormularioClientes
@@ -37,6 +42,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
     private FormularioProdutos() {
         initComponents();
         dao = new ProdutoDao();
+        fornecedorDao = new FornecedorDao();
     }
 
     /**
@@ -214,15 +220,16 @@ public class FormularioProdutos extends javax.swing.JFrame {
                         .addComponent(jLabel17)
                         .addGap(47, 47, 47)))
                 .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(painelDadosLayout.createSequentialGroup()
-                        .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49)
-                        .addComponent(jLabel18)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(painelDadosLayout.createSequentialGroup()
-                        .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(painelDadosLayout.createSequentialGroup()
+                                .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel18)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtEstoque))
+                            .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(34, 34, 34)
                         .addComponent(btnPesquisar)))
                 .addContainerGap(1244, Short.MAX_VALUE))
@@ -230,7 +237,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         painelDadosLayout.setVerticalGroup(
@@ -377,6 +384,24 @@ public class FormularioProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPesquisaDescricaoActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        try {
+            List<FornecedorMinDto> lista = fornecedorDao.listarFornecedoresCadastrados();
+
+            cbFornecedor.removeAllItems();
+
+            for (int i = 0; i < lista.size(); i++) {
+                cbFornecedor.addItem(lista.get(i));
+            }
+
+        } catch (ResourceNotFoundException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+
         /*try {
             final List<Cliente> clientes = dao.listar("");
             popularTabela(clientes);
@@ -525,7 +550,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
     private javax.swing.JButton btnPesquisaDescricao;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JComboBox<String> cbFornecedor;
+    private javax.swing.JComboBox<FornecedorMinDto> cbFornecedor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -592,7 +617,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
             if (descricao.isBlank()) {
                 throw new IllegalArgumentException("Preencha a descrição para realizar a busca!");
             }
-            
+
             var produto = dao.buscarProduto(descricao)
                     .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado."));
 
