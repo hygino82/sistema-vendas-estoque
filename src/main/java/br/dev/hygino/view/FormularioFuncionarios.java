@@ -575,7 +575,6 @@ public class FormularioFuncionarios extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void txtPesquisaNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaNomeKeyReleased
-
         carregarDadosNaTabela();
     }//GEN-LAST:event_txtPesquisaNomeKeyReleased
 

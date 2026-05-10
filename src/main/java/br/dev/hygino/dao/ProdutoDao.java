@@ -1,5 +1,6 @@
 package br.dev.hygino.dao;
 
+import br.dev.hygino.exceptions.DatabaseException;
 import br.dev.hygino.exceptions.ResourceNotFoundException;
 import br.dev.hygino.jdbc.ConexaoBanco;
 import br.dev.hygino.models.Produto;
@@ -50,8 +51,8 @@ public final class ProdutoDao {
                    UPDATE tb_produtos SET
                    descricao=?,
                    preco=?,
-                   qtd_etoque=?,
-                   for_id=?,
+                   qtd_estoque=?,
+                   for_id=?
                    WHERE id=?     
                    """;
 
@@ -67,7 +68,7 @@ public final class ProdutoDao {
             JOptionPane.showMessageDialog(null, "Produto " + produto.getDescricao() + " editado com sucesso!");
             //closeConnection();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao editar cliente: " + e.getMessage());
+            throw new DatabaseException("Erro ao editar produto: " + e.getMessage());
         }
     }
 

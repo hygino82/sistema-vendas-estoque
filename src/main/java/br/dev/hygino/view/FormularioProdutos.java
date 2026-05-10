@@ -9,8 +9,7 @@ import br.dev.hygino.utils.Utilitarios;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.util.List;
-import java.util.Map;
-import javax.swing.JComboBox;
+import java.util.Optional;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FormularioProdutos extends javax.swing.JFrame {
 
-    Map<Integer, String> fornecedores;
+    private List<FornecedorMinDto> lista;
     //Singleton for create a unique instance of FormularioClientes
 
     private static FormularioProdutos instance;
@@ -62,7 +61,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
         txtPesquisaDescricao = new javax.swing.JTextField();
         btnPesquisaDescricao = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaClientes = new javax.swing.JTable();
+        tabelaProdutos = new javax.swing.JTable();
         painelDados = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
@@ -130,7 +129,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
             }
         });
 
-        tabelaClientes.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -138,12 +137,12 @@ public class FormularioProdutos extends javax.swing.JFrame {
                 "Id", "Descrição", "Preço", "Estoque", "Fornecedor"
             }
         ));
-        tabelaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabelaProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaClientesMouseClicked(evt);
+                tabelaProdutosMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tabelaClientes);
+        jScrollPane1.setViewportView(tabelaProdutos);
 
         javax.swing.GroupLayout painelConsultaLayout = new javax.swing.GroupLayout(painelConsulta);
         painelConsulta.setLayout(painelConsultaLayout);
@@ -237,7 +236,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         painelDadosLayout.setVerticalGroup(
@@ -361,9 +360,9 @@ public class FormularioProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnPesquisaDescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaDescricaoActionPerformed
-        /* final String nome = txtPesquisaDescricao.getText();
+        final String descricao = txtPesquisaDescricao.getText();
         try {
-            var result = dao.listar(nome);
+            var result = dao.listar(descricao);
             if (!result.isEmpty()) {
                 popularTabela(result);
 
@@ -380,19 +379,14 @@ public class FormularioProdutos extends javax.swing.JFrame {
                     "Erro",
                     JOptionPane.ERROR_MESSAGE
             );
-        }*/
+        }
     }//GEN-LAST:event_btnPesquisaDescricaoActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        carregarDadosFornecedores();
         try {
-            List<FornecedorMinDto> lista = fornecedorDao.listarFornecedoresCadastrados();
-
-            cbFornecedor.removeAllItems();
-
-            for (int i = 0; i < lista.size(); i++) {
-                cbFornecedor.addItem(lista.get(i));
-            }
-
+            final List<Produto> produtos = dao.listar("");
+            popularTabela(produtos);
         } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(
                     this,
@@ -401,18 +395,6 @@ public class FormularioProdutos extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE
             );
         }
-
-        /*try {
-            final List<Cliente> clientes = dao.listar("");
-            popularTabela(clientes);
-        } catch (ResourceNotFoundException e) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    e.getMessage(),
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }*/
     }//GEN-LAST:event_formWindowActivated
 
     private void txtPesquisaDescricaoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaDescricaoKeyReleased
@@ -426,66 +408,41 @@ public class FormularioProdutos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtDescricaoKeyPressed
 
-    private void tabelaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaClientesMouseClicked
-        /*int row = tabelaClientes.getSelectedRow();
+    private void tabelaProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProdutosMouseClicked
+        int row = tabelaProdutos.getSelectedRow();
 
         if (row == -1) {
             return; // nenhuma linha selecionada
         }
 
-        painelGuias.setSelectedIndex(0);
+        painelGuias.setSelectedIndex(1);
 
         txtCodigo.setText(getValue(row, 0));
         txtDescricao.setText(getValue(row, 1));
-        txtEmail.setText(getValue(row, 2));
-        txtCelular.setText(getValue(row, 3));
-        txtTelefone.setText(getValue(row, 4));
-        txtCep.setText(getValue(row, 5));
-        txtEndereco.setText(getValue(row, 6));
-        txtNumero.setText(getValue(row, 7));
-        txtBairro.setText(getValue(row, 8));
-        txtCidade.setText(getValue(row, 9));
-        txtComplemento.setText(getValue(row, 10));
-        cbUf.setSelectedItem(getValue(row, 11));
-        txtRg.setText(getValue(row, 12));
-        txtCpf.setText(getValue(row, 13));*/
+        txtPreco.setText(getValue(row, 2));
+        txtEstoque.setText(getValue(row, 3));
 
-    }//GEN-LAST:event_tabelaClientesMouseClicked
+        var fornecedor = buscaFornecedor(Integer.parseInt(getValue(row, 4)))
+                .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não econtrado!"));
+
+        System.out.println(fornecedor);
+
+        cbFornecedor.setSelectedItem(fornecedor);
+    }//GEN-LAST:event_tabelaProdutosMouseClicked
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        /* String nome = txtDescricao.getText();
-        String cpf = txtCpf.getText();
-        String rg = txtRg.getText();
-        String email = txtEmail.getText();
-        String telefone = txtTelefone.getText();
-        String celular = txtCelular.getText();
-        String cep = txtCep.getText();
-        String endereco = txtEndereco.getText();
-        int numero = Integer.parseInt(txtNumero.getText());
-        String complemento = txtComplemento.getText();
-        String bairro = txtBairro.getText();
-        String cidade = txtCidade.getText();
-        String estado = cbUf.getSelectedItem().toString();
-        int id = Integer.parseInt(txtCodigo.getText());
+        final int id = Integer.parseInt(txtCodigo.getText());
+        final String descricao = txtDescricao.getText();
+        final double preco = Double.parseDouble(txtPreco.getText());
+        final int estoque = Integer.parseInt(txtEstoque.getText());
+        final int codigoFornecedor = ((FornecedorMinDto) cbFornecedor.getSelectedItem()).id();
+        
+        System.out.println(codigoFornecedor);
+        
+        final Produto produto = new Produto(id, descricao, preco, estoque, codigoFornecedor);
 
-        Cliente cliente = new Cliente(
-                id,
-                nome,
-                rg,
-                cpf,
-                email,
-                telefone,
-                celular,
-                cep,
-                endereco,
-                numero,
-                complemento,
-                bairro,
-                cidade,
-                estado);
-
-        dao.atualizar(cliente);
-        Utilitarios.limpaTela(this.painelDados);*/
+        dao.atualizar(produto);
+        Utilitarios.limpaTela(this.painelDados);
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -508,7 +465,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private String getValue(int row, int column) {
-        Object value = tabelaClientes.getValueAt(row, column);
+        Object value = tabelaProdutos.getValueAt(row, column);
         return value != null ? value.toString() : "";
     }
 
@@ -563,7 +520,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
     private javax.swing.JPanel painelConsulta;
     private javax.swing.JPanel painelDados;
     private javax.swing.JTabbedPane painelGuias;
-    private javax.swing.JTable tabelaClientes;
+    private javax.swing.JTable tabelaProdutos;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDescricao;
     private javax.swing.JTextField txtEstoque;
@@ -572,25 +529,22 @@ public class FormularioProdutos extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void popularCampos(Produto produto) {
-        /*txtDescricao.setText(cliente.getNome());
-        txtRg.setText(cliente.getRg());
-        txtCpf.setText(cliente.getCpf());
-        txtEmail.setText(cliente.getEmail());
-        txtTelefone.setText(cliente.getTelefone());
-        txtCelular.setText(cliente.getCelular());
-        txtCep.setText(cliente.getCep());
-        txtEndereco.setText(cliente.getEndereco());
-        txtNumero.setText(cliente.getNumero().toString());
-        txtComplemento.setText(cliente.getComplemento());
-        txtBairro.setText(cliente.getBairro());
-        txtCidade.setText(cliente.getCidade());
-        txtCodigo.setText(cliente.getId().toString());
-        cbUf.setSelectedItem(cliente.getEstado());*/
+        txtDescricao.setText(produto.getDescricao());
+        txtEstoque.setText(Integer.toString(produto.getQuantidadeEstoque()));
+        txtPreco.setText(Double.toString(produto.getPreco()));
+
+        txtCodigo.setText(produto.getId().toString());
+
+        carregarDadosFornecedores();
+        FornecedorMinDto fornecedor = buscaFornecedor(produto.getFornecedorId())
+                .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrotrado!"));
+        //System.out.println("Fornecedor: " + fornecedor);
+        cbFornecedor.setSelectedItem(fornecedor);
     }
 
     private void popularTabela(List<Produto> produtos) {
 
-        DefaultTableModel model = (DefaultTableModel) tabelaClientes.getModel();
+        DefaultTableModel model = (DefaultTableModel) tabelaProdutos.getModel();
 
         // limpa a tabela
         model.setRowCount(0);
@@ -629,6 +583,30 @@ public class FormularioProdutos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Atenção", JOptionPane.INFORMATION_MESSAGE);
             Utilitarios.limpaTela(this.painelDados);
             txtDescricao.requestFocus();
+        }
+    }
+
+    private Optional<FornecedorMinDto> buscaFornecedor(int fornecedorId) {
+        return lista.stream().filter(f -> f.id() == fornecedorId).findFirst();
+    }
+
+    private void carregarDadosFornecedores() {
+        try {
+            lista = fornecedorDao.listarFornecedoresCadastrados();
+
+            cbFornecedor.removeAllItems();
+
+            for (int i = 0; i < lista.size(); i++) {
+                cbFornecedor.addItem(lista.get(i));
+            }
+
+        } catch (ResourceNotFoundException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     }
 }
