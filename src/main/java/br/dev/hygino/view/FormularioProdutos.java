@@ -343,7 +343,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
         final String descricao = txtDescricao.getText();
         final double preco = Double.parseDouble(txtPreco.getText());
         final int estoque = Integer.parseInt(txtEstoque.getText());
-        final int codigoFornecedor = cbFornecedor.getSelectedIndex();
+        final int codigoFornecedor = ((FornecedorMinDto) cbFornecedor.getSelectedItem()).id();
 
         final var produto = new Produto(null, descricao, preco, estoque, codigoFornecedor);
 
@@ -436,9 +436,9 @@ public class FormularioProdutos extends javax.swing.JFrame {
         final double preco = Double.parseDouble(txtPreco.getText());
         final int estoque = Integer.parseInt(txtEstoque.getText());
         final int codigoFornecedor = ((FornecedorMinDto) cbFornecedor.getSelectedItem()).id();
-        
+
         System.out.println(codigoFornecedor);
-        
+
         final Produto produto = new Produto(id, descricao, preco, estoque, codigoFornecedor);
 
         dao.atualizar(produto);
