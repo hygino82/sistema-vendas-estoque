@@ -1,0 +1,16 @@
+meta {
+  name: Get by Id
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{HOST}}/client/3
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

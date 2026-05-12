@@ -1,0 +1,20 @@
+meta {
+  name: Get all
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{HOST}}/supplier?name=for
+  body: none
+  auth: inherit
+}
+
+params:query {
+  name: for
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

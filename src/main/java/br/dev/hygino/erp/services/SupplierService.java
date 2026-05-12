@@ -1,17 +1,23 @@
 package br.dev.hygino.erp.services;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import br.dev.hygino.erp.dtos.RequestSupplierDto;
 import br.dev.hygino.erp.dtos.ResponseSupplierDto;
 import br.dev.hygino.erp.entities.State;
 import br.dev.hygino.erp.entities.Supplier;
 import br.dev.hygino.erp.repository.SupplierRepository;
-import jakarta.transaction.Transactional;
+import br.dev.hygino.erp.services.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class SupplierService {
 
@@ -37,5 +43,26 @@ public class SupplierService {
         entity.setDistrict(dto.district());
         entity.setNumber(dto.number());
         entity.setComplement(dto.complement());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ResponseSupplierDto> getSuppliers(Pageable pageable, String name) {
+        Page<Supplier> suppliers = supplierRepository.findByNameContainingIgnoreCase(pageable, name);
+        return suppliers.map(ResponseSupplierDto::new);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseSupplierDto getSupplier(Long id) {
+        Supplier supplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found!"));
+        return new ResponseSupplierDto(supplier);
+    }
+
+    public void deleteSupplier(Long id) {
+        try {
+            supplierRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResourceNotFoundException("Supplier not found!");
+        }
     }
 }
