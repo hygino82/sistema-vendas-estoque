@@ -1,5 +1,7 @@
 package br.dev.hygino.erp.dtos;
 
+import java.time.LocalDateTime;
+
 import br.dev.hygino.erp.entities.Supplier;
 
 public record ResponseSupplierDto(
@@ -14,7 +16,9 @@ public record ResponseSupplierDto(
         String complement,
         String district,
         String city,
-        String state) {
+        String state,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt) {
 
     public ResponseSupplierDto(Supplier supplier) {
         this(
@@ -29,6 +33,8 @@ public record ResponseSupplierDto(
                 supplier.getComplement(),
                 supplier.getDistrict(),
                 supplier.getCity(),
-                supplier.getState().toString());
+                supplier.getState().toString(),
+                supplier.getCreatedAt(),
+                supplier.getUpdatedAt());
     }
 }

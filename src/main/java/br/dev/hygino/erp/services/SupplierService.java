@@ -13,6 +13,7 @@ import br.dev.hygino.erp.entities.State;
 import br.dev.hygino.erp.entities.Supplier;
 import br.dev.hygino.erp.repository.SupplierRepository;
 import br.dev.hygino.erp.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -62,6 +63,18 @@ public class SupplierService {
         try {
             supplierRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
+            throw new ResourceNotFoundException("Supplier not found!");
+        }
+    }
+
+    @Transactional
+    public ResponseSupplierDto updateSupplier(Long id, RequestSupplierDto dto) {
+        try {
+            Supplier supplier = supplierRepository.getReferenceById(id);
+            dtoToEntity(dto, supplier);
+            supplier = supplierRepository.save(supplier);
+            return new ResponseSupplierDto(supplier);
+        } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Supplier not found!");
         }
     }

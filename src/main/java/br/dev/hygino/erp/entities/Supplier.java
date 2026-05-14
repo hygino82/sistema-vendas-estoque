@@ -1,5 +1,7 @@
 package br.dev.hygino.erp.entities;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -50,4 +52,21 @@ public class Supplier {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private State state;
+
+   // @NotNull
+    private LocalDateTime createdAt;
+
+   // @NotNull
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    private void create() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    private void update() {
+        updatedAt = LocalDateTime.now();
+    }
 }
