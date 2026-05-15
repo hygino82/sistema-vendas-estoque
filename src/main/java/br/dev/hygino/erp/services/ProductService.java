@@ -1,5 +1,7 @@
 package br.dev.hygino.erp.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -37,5 +39,11 @@ public class ProductService {
         product.setPrice(dto.price());
         product.setStock(dto.stock());
         product.setSupplier(supplier);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ResponseProductDto> getProducts(Pageable pageable, String name) {
+        Page<Product> products = productRepository.findByNameContainingIgnoreCase(name, pageable);
+        return products.map(ResponseProductDto::new);
     }
 }
