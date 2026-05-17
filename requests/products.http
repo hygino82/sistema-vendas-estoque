@@ -3,11 +3,11 @@ POST http://localhost:8080/api/v1/product
 Content-Type: application/json
 
 {
-  "name": "Product Name",
-  "description": "Product Description",
-  "price": 20.99,
-  "stock": 10,
-  "supplierId": 100
+  "name": "Fritadeira elétrica",
+  "description": "Fritadeira elétrica 220V",
+  "price": 120.99,
+  "stock": 7,
+  "supplierId": 1
 }
 
 ### Get Products

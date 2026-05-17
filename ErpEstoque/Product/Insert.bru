@@ -1,0 +1,26 @@
+meta {
+  name: Insert
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{HOST}}/product
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Fritadeira elétrica",
+    "description": "Fritadeira elétrica 127V",
+    "price": 130.95,
+    "stock": 7,
+    "supplierId": 2
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
