@@ -4,6 +4,7 @@ import br.dev.hygino.dao.FornecedorDao;
 import br.dev.hygino.dao.ProdutoDao;
 import br.dev.hygino.dto.FornecedorMinDto;
 import br.dev.hygino.exceptions.ResourceNotFoundException;
+import br.dev.hygino.models.Fornecedor;
 import br.dev.hygino.models.Produto;
 import br.dev.hygino.utils.Utilitarios;
 import java.awt.HeadlessException;
@@ -550,12 +551,15 @@ public class FormularioProdutos extends javax.swing.JFrame {
         model.setRowCount(0);
 
         for (Produto p : produtos) {
+            final Fornecedor f = fornecedorDao.buscarFornecedorPorId(p.getFornecedorId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
+
             model.addRow(new Object[]{
                 p.getId(),
                 p.getDescricao(),
                 p.getPreco(),
                 p.getQuantidadeEstoque(),
-                p.getFornecedorId(),});
+                f.getNome()});
         }
     }
 
