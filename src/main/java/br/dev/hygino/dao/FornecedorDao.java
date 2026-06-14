@@ -200,7 +200,7 @@ public class FornecedorDao {
     public List<FornecedorMinDto> listarFornecedoresCadastrados() {
 
         List<FornecedorMinDto> fornecedores = new ArrayList<>();
-        
+
         var sql = """
                     SELECT id, nome
                     FROM tb_fornecedores
@@ -224,39 +224,25 @@ public class FornecedorDao {
             );
         }
     }
-    
-    public Optional<Fornecedor> buscarFornecedorPorId(long fornecedorId) {
+
+    public Optional<FornecedorMinDto> buscarNomeFornecedorPorId(long fornecedorId) {
         final var sql = """
-                  SELECT * FROM tb_fornecedores
+                  SELECT nome, id FROM tb_fornecedores
                   WHERE id = ?
                   """;
 
-        Optional<Fornecedor> result = Optional.empty();
+        Optional<FornecedorMinDto> result = Optional.empty();
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, fornecedorId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Fornecedor fornecedorEncontrado = new Fornecedor();
-                    fornecedorEncontrado.setId(rs.getInt("id"));
-                    fornecedorEncontrado.setNome(rs.getString("nome"));
-                    fornecedorEncontrado.setCnpj(rs.getString("cnpj"));
-                    fornecedorEncontrado.setEmail(rs.getString("email"));
-                    fornecedorEncontrado.setTelefone(rs.getString("telefone"));
-                    fornecedorEncontrado.setCelular(rs.getString("celular"));
-                    fornecedorEncontrado.setCep(rs.getString("cep"));
-                    fornecedorEncontrado.setNumero(rs.getInt("numero"));
-                    fornecedorEncontrado.setComplemento(rs.getString("complemento"));
-                    fornecedorEncontrado.setBairro(rs.getString("bairro"));
-                    fornecedorEncontrado.setCidade(rs.getString("cidade"));
-                    fornecedorEncontrado.setEstado(rs.getString("estado"));
-                    fornecedorEncontrado.setEndereco(rs.getString("endereco"));
-                    result = Optional.of(fornecedorEncontrado);
+                    result = Optional.of(new FornecedorMinDto(rs.getInt("id"), rs.getString("nome")));
                 }
                 return result;
             }
         } catch (SQLException e) {
-            throw new ResourceNotFoundException("Erro ao buscar fornecedor: " + e.getMessage() + "Erro no Banco de Dados");
+            throw new ResourceNotFoundException("Erro ao buscar fornecedor: " + e.getMessage());
         }
     }
 }

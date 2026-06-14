@@ -4,7 +4,6 @@ import br.dev.hygino.dao.FornecedorDao;
 import br.dev.hygino.dao.ProdutoDao;
 import br.dev.hygino.dto.FornecedorMinDto;
 import br.dev.hygino.exceptions.ResourceNotFoundException;
-import br.dev.hygino.models.Fornecedor;
 import br.dev.hygino.models.Produto;
 import br.dev.hygino.utils.Utilitarios;
 import java.awt.HeadlessException;
@@ -423,7 +422,8 @@ public class FormularioProdutos extends javax.swing.JFrame {
         txtPreco.setText(getValue(row, 2));
         txtEstoque.setText(getValue(row, 3));
 
-        var fornecedor = buscaFornecedor(Integer.parseInt(getValue(row, 4)))
+        //var fornecedor = buscaFornecedor(Integer.parseInt(getValue(row, 4)))
+        var fornecedor = buscaFornecedor(getValue(row, 4))
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não econtrado!"));
 
         System.out.println(fornecedor);
@@ -537,7 +537,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
         txtCodigo.setText(produto.getId().toString());
 
         carregarDadosFornecedores();
-        FornecedorMinDto fornecedor = buscaFornecedor(produto.getFornecedorId())
+        FornecedorMinDto fornecedor = fornecedorDao.buscarNomeFornecedorPorId(produto.getFornecedorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrotrado!"));
         //System.out.println("Fornecedor: " + fornecedor);
         cbFornecedor.setSelectedItem(fornecedor);
@@ -551,7 +551,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
         model.setRowCount(0);
 
         for (Produto p : produtos) {
-            final Fornecedor f = fornecedorDao.buscarFornecedorPorId(p.getFornecedorId())
+            final var f = fornecedorDao.buscarNomeFornecedorPorId(p.getFornecedorId())
                     .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
 
             model.addRow(new Object[]{
@@ -559,7 +559,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
                 p.getDescricao(),
                 p.getPreco(),
                 p.getQuantidadeEstoque(),
-                f.getNome()});
+                f.name()});
         }
     }
 
@@ -590,8 +590,8 @@ public class FormularioProdutos extends javax.swing.JFrame {
         }
     }
 
-    private Optional<FornecedorMinDto> buscaFornecedor(int fornecedorId) {
-        return lista.stream().filter(f -> f.id() == fornecedorId).findFirst();
+    private Optional<FornecedorMinDto> buscaFornecedor(String nome) {
+        return lista.stream().filter(f -> f.name().equals(nome)).findFirst();
     }
 
     private void carregarDadosFornecedores() {
