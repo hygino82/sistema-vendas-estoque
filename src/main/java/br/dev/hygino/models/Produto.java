@@ -10,5 +10,5 @@ public class Produto {
     private String descricao;
     private double preco;
     private int quantidadeEstoque;
-    private int fornecedorId;
+    private Fornecedor fornecedor;
 }

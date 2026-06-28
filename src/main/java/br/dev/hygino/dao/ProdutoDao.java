@@ -35,7 +35,7 @@ public final class ProdutoDao {
             stmt.setString(1, produto.getDescricao());
             stmt.setDouble(2, produto.getPreco());
             stmt.setInt(3, produto.getQuantidadeEstoque());
-            stmt.setInt(4, produto.getFornecedorId());
+            stmt.setInt(4, produto.getFornecedor().getId());
 
             // 2. Executar a consulta
             stmt.execute(); // ou stmt.executeUpdate() se você quiser saber quantas linhas foram afetadas
@@ -61,7 +61,7 @@ public final class ProdutoDao {
             stmt.setString(1, produto.getDescricao());
             stmt.setDouble(2, produto.getPreco());
             stmt.setInt(3, produto.getQuantidadeEstoque());
-            stmt.setInt(4, produto.getFornecedorId());
+            stmt.setInt(4, produto.getFornecedor().getId());
             stmt.setInt(5, produto.getId());
             // 2. Executar a consulta
             stmt.execute(); // ou stmt.executeUpdate() se você quiser saber quantas linhas foram afetadas
@@ -93,6 +93,8 @@ public final class ProdutoDao {
         WHERE UPPER(descricao) LIKE CONCAT('%', UPPER(?), '%')
         """;
 
+        FornecedorDao fornecedorDao = new FornecedorDao();
+
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             // operador de coalescência nula apenas no Java
@@ -101,12 +103,15 @@ public final class ProdutoDao {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
+                var fornecedor = fornecedorDao.buscarFornecedorPorId(rs.getInt("for_id"))
+                        .orElseThrow(() -> new IllegalArgumentException("Fornecedor não encontrado!"));
+
                 Produto produto = new Produto(
                         rs.getInt("id"),
                         rs.getString("descricao"),
                         rs.getDouble("preco"),
                         rs.getInt("qtd_estoque"),
-                        rs.getInt("for_id")
+                        fornecedor
                 );
 
                 produtos.add(produto);
@@ -128,17 +133,20 @@ public final class ProdutoDao {
                   """;
 
         Optional<Produto> result = Optional.empty();
+        FornecedorDao fornecedorDao = new FornecedorDao();
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, descricao);
             try (ResultSet rs = stmt.executeQuery()) {
+                var fornecedor = fornecedorDao.buscarFornecedorPorId(rs.getInt("for_id"))
+                        .orElseThrow(() -> new IllegalArgumentException("Fornecedor não encontrado!"));
                 if (rs.next()) {
                     Produto produto = new Produto(
                             rs.getInt("id"),
                             rs.getString("descricao"),
                             rs.getDouble("preco"),
                             rs.getInt("qtd_estoque"),
-                            rs.getInt("for_id")
+                            fornecedor
                     );
                     result = Optional.of(produto);
                 }

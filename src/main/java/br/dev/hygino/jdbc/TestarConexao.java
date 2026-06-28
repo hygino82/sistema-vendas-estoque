@@ -2,9 +2,7 @@ package br.dev.hygino.jdbc;
 
 import br.dev.hygino.dao.ClienteDao;
 import br.dev.hygino.dao.ProdutoDao;
-import br.dev.hygino.exceptions.DatabaseException;
 import br.dev.hygino.models.Cliente;
-import br.dev.hygino.models.Produto;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -18,9 +16,10 @@ public class TestarConexao {
         //buscarProdutos();
         //adicionarProduto();
         //adicionarCliente();
-        atualizarProduto();
+       // atualizarProduto();
     }
 
+    /*
     private static void adicionarProduto() {
 
         try {
@@ -35,7 +34,7 @@ public class TestarConexao {
         } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(null, "Erro ao tentar se conectar com o banco de dados!\n" + e.getMessage());
         }
-    }
+    }*/
 
     private static void adicionarCliente() {
         try {
@@ -90,7 +89,7 @@ public class TestarConexao {
         
         result.forEach((cod, nome) -> System.out.println(cod + " : " + nome));
     }  */
-    private static void atualizarProduto() {
+ /*private static void atualizarProduto() {
         final var prod = new Produto(8, "Mesa com regulagem de altura", 187.45, 4, 3);
         try {
             final ProdutoDao dao = new ProdutoDao();
@@ -98,5 +97,5 @@ public class TestarConexao {
         } catch (DatabaseException e) {
             JOptionPane.showMessageDialog(null, "Erro ao tentar se conectar com o banco de dados!\n" + e.getMessage());
         }
-    }
+    }*/
 }

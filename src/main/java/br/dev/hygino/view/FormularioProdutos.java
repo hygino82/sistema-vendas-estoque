@@ -4,6 +4,7 @@ import br.dev.hygino.dao.FornecedorDao;
 import br.dev.hygino.dao.ProdutoDao;
 import br.dev.hygino.dto.FornecedorMinDto;
 import br.dev.hygino.exceptions.ResourceNotFoundException;
+import br.dev.hygino.models.Fornecedor;
 import br.dev.hygino.models.Produto;
 import br.dev.hygino.utils.Utilitarios;
 import java.awt.HeadlessException;
@@ -343,9 +344,13 @@ public class FormularioProdutos extends javax.swing.JFrame {
         final String descricao = txtDescricao.getText();
         final double preco = Double.parseDouble(txtPreco.getText());
         final int estoque = Integer.parseInt(txtEstoque.getText());
-        final int codigoFornecedor = ((FornecedorMinDto) cbFornecedor.getSelectedItem()).id();
+        // final int codigoFornecedor = ((FornecedorMinDto) cbFornecedor.getSelectedItem()).id();
 
-        final var produto = new Produto(null, descricao, preco, estoque, codigoFornecedor);
+        final String nomeFornecedor = ((FornecedorMinDto) cbFornecedor.getSelectedItem()).name();
+        final Fornecedor fornecedor = fornecedorDao.buscarFornecedor(nomeFornecedor)
+                .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
+
+        final var produto = new Produto(null, descricao, preco, estoque, fornecedor);
 
         dao.salvar(produto);
         Utilitarios.limpaTela(this.painelDados);
@@ -436,11 +441,16 @@ public class FormularioProdutos extends javax.swing.JFrame {
         final String descricao = txtDescricao.getText();
         final double preco = Double.parseDouble(txtPreco.getText());
         final int estoque = Integer.parseInt(txtEstoque.getText());
-        final int codigoFornecedor = ((FornecedorMinDto) cbFornecedor.getSelectedItem()).id();
 
-        System.out.println(codigoFornecedor);
+        //TODO corrigir método pois a entidade produto tem o objeto Fornecedor
+        final String nomeFornecedor = ((FornecedorMinDto) cbFornecedor.getSelectedItem()).name();
 
-        final Produto produto = new Produto(id, descricao, preco, estoque, codigoFornecedor);
+        final Fornecedor fornecedor = fornecedorDao.buscarFornecedor(nomeFornecedor)
+                .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
+
+        System.out.println(fornecedor);
+
+        final Produto produto = new Produto(id, descricao, preco, estoque, fornecedor);
 
         dao.atualizar(produto);
         Utilitarios.limpaTela(this.painelDados);
@@ -537,7 +547,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
         txtCodigo.setText(produto.getId().toString());
 
         carregarDadosFornecedores();
-        FornecedorMinDto fornecedor = fornecedorDao.buscarNomeFornecedorPorId(produto.getFornecedorId())
+        String fornecedor = fornecedorDao.buscarNomeFornecedor(produto.getFornecedor().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrotrado!"));
         //System.out.println("Fornecedor: " + fornecedor);
         cbFornecedor.setSelectedItem(fornecedor);
@@ -551,7 +561,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
         model.setRowCount(0);
 
         for (Produto p : produtos) {
-            final var f = fornecedorDao.buscarNomeFornecedorPorId(p.getFornecedorId())
+            final String fornecedor = fornecedorDao.buscarNomeFornecedor(p.getFornecedor().getId())
                     .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
 
             model.addRow(new Object[]{
@@ -559,7 +569,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
                 p.getDescricao(),
                 p.getPreco(),
                 p.getQuantidadeEstoque(),
-                f.name()});
+                fornecedor});
         }
     }
 
