@@ -19,20 +19,20 @@ import javax.swing.table.DefaultTableModel;
  * @author hygino
  */
 public class FormularioProdutos extends javax.swing.JFrame {
-
+    
     private List<FornecedorMinDto> lista;
     //Singleton for create a unique instance of FormularioClientes
 
     private static FormularioProdutos instance;
-
+    
     public static FormularioProdutos getInstance() {
         if (instance == null) {
             instance = new FormularioProdutos();
         }
-
+        
         return instance;
     }
-
+    
     private final ProdutoDao dao;
     private final FornecedorDao fornecedorDao;
 
@@ -57,12 +57,6 @@ public class FormularioProdutos extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         painelGuias = new javax.swing.JTabbedPane();
-        painelConsulta = new javax.swing.JPanel();
-        jLabel16 = new javax.swing.JLabel();
-        txtPesquisaDescricao = new javax.swing.JTextField();
-        btnPesquisaDescricao = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaProdutos = new javax.swing.JTable();
         painelDados = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
@@ -75,11 +69,18 @@ public class FormularioProdutos extends javax.swing.JFrame {
         txtEstoque = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         cbFornecedor = new javax.swing.JComboBox<>();
+        painelConsulta = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        txtPesquisaDescricao = new javax.swing.JTextField();
+        btnPesquisaDescricao = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelaProdutos = new javax.swing.JTable();
         btnNovo = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnImprimir = new javax.swing.JButton();
+        btnProdutoFornecedor = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formulário de Clientes");
@@ -113,69 +114,6 @@ public class FormularioProdutos extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jLabel16.setText("Descrição:");
-
-        txtPesquisaDescricao.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtPesquisaDescricaoKeyReleased(evt);
-            }
-        });
-
-        btnPesquisaDescricao.setBackground(new java.awt.Color(255, 255, 153));
-        btnPesquisaDescricao.setText("Pesquisar");
-        btnPesquisaDescricao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPesquisaDescricaoActionPerformed(evt);
-            }
-        });
-
-        tabelaProdutos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Id", "Descrição", "Preço", "Estoque", "Fornecedor"
-            }
-        ));
-        tabelaProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaProdutosMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tabelaProdutos);
-
-        javax.swing.GroupLayout painelConsultaLayout = new javax.swing.GroupLayout(painelConsulta);
-        painelConsulta.setLayout(painelConsultaLayout);
-        painelConsultaLayout.setHorizontalGroup(
-            painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelConsultaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(painelConsultaLayout.createSequentialGroup()
-                        .addComponent(jLabel16)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtPesquisaDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(btnPesquisaDescricao)
-                        .addGap(0, 1290, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        painelConsultaLayout.setVerticalGroup(
-            painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelConsultaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPesquisaDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPesquisaDescricao))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(131, Short.MAX_VALUE))
-        );
-
-        painelGuias.addTab("Consulta de produtos", painelConsulta);
 
         jLabel2.setText("Código:");
 
@@ -266,6 +204,69 @@ public class FormularioProdutos extends javax.swing.JFrame {
 
         painelGuias.addTab("Dados de produto", painelDados);
 
+        jLabel16.setText("Descrição:");
+
+        txtPesquisaDescricao.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPesquisaDescricaoKeyReleased(evt);
+            }
+        });
+
+        btnPesquisaDescricao.setBackground(new java.awt.Color(255, 255, 153));
+        btnPesquisaDescricao.setText("Pesquisar");
+        btnPesquisaDescricao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisaDescricaoActionPerformed(evt);
+            }
+        });
+
+        tabelaProdutos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Descrição", "Preço", "Estoque", "Fornecedor"
+            }
+        ));
+        tabelaProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaProdutosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabelaProdutos);
+
+        javax.swing.GroupLayout painelConsultaLayout = new javax.swing.GroupLayout(painelConsulta);
+        painelConsulta.setLayout(painelConsultaLayout);
+        painelConsultaLayout.setHorizontalGroup(
+            painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelConsultaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(painelConsultaLayout.createSequentialGroup()
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtPesquisaDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnPesquisaDescricao)
+                        .addGap(0, 1290, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        painelConsultaLayout.setVerticalGroup(
+            painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelConsultaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(painelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPesquisaDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPesquisaDescricao))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(131, Short.MAX_VALUE))
+        );
+
+        painelGuias.addTab("Consulta de produtos", painelConsulta);
+
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/novo.png"))); // NOI18N
         btnNovo.setText("NOVO");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -301,6 +302,13 @@ public class FormularioProdutos extends javax.swing.JFrame {
         btnImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/printer.png"))); // NOI18N
         btnImprimir.setText("IMPRIMIR");
 
+        btnProdutoFornecedor.setText("LISTA DTO");
+        btnProdutoFornecedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProdutoFornecedorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -318,6 +326,8 @@ public class FormularioProdutos extends javax.swing.JFrame {
                 .addComponent(btnExcluir)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnImprimir)
+                .addGap(18, 18, 18)
+                .addComponent(btnProdutoFornecedor)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -332,7 +342,8 @@ public class FormularioProdutos extends javax.swing.JFrame {
                     .addComponent(btnSalvar)
                     .addComponent(btnEditar)
                     .addComponent(btnExcluir)
-                    .addComponent(btnImprimir))
+                    .addComponent(btnImprimir)
+                    .addComponent(btnProdutoFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -349,9 +360,9 @@ public class FormularioProdutos extends javax.swing.JFrame {
         final String nomeFornecedor = ((FornecedorMinDto) cbFornecedor.getSelectedItem()).name();
         final Fornecedor fornecedor = fornecedorDao.buscarFornecedor(nomeFornecedor)
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
-
+        
         final var produto = new Produto(null, descricao, preco, estoque, fornecedor);
-
+        
         dao.salvar(produto);
         Utilitarios.limpaTela(this.painelDados);
     }//GEN-LAST:event_btnSalvarActionPerformed
@@ -370,7 +381,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
             var result = dao.listar(descricao);
             if (!result.isEmpty()) {
                 popularTabela(result);
-
+                
             } else {
                 JOptionPane.showMessageDialog(
                         this,
@@ -403,7 +414,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void txtPesquisaDescricaoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaDescricaoKeyReleased
-
+        
         carregarDadosNaTabela();
     }//GEN-LAST:event_txtPesquisaDescricaoKeyReleased
 
@@ -415,13 +426,13 @@ public class FormularioProdutos extends javax.swing.JFrame {
 
     private void tabelaProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProdutosMouseClicked
         int row = tabelaProdutos.getSelectedRow();
-
+        
         if (row == -1) {
             return; // nenhuma linha selecionada
         }
-
+        
         painelGuias.setSelectedIndex(1);
-
+        
         txtCodigo.setText(getValue(row, 0));
         txtDescricao.setText(getValue(row, 1));
         txtPreco.setText(getValue(row, 2));
@@ -430,9 +441,9 @@ public class FormularioProdutos extends javax.swing.JFrame {
         //var fornecedor = buscaFornecedor(Integer.parseInt(getValue(row, 4)))
         var fornecedor = buscaFornecedor(getValue(row, 4))
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não econtrado!"));
-
+        
         System.out.println(fornecedor);
-
+        
         cbFornecedor.setSelectedItem(fornecedor);
     }//GEN-LAST:event_tabelaProdutosMouseClicked
 
@@ -444,14 +455,14 @@ public class FormularioProdutos extends javax.swing.JFrame {
 
         //TODO corrigir método pois a entidade produto tem o objeto Fornecedor
         final String nomeFornecedor = ((FornecedorMinDto) cbFornecedor.getSelectedItem()).name();
-
+        
         final Fornecedor fornecedor = fornecedorDao.buscarFornecedor(nomeFornecedor)
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
-
+        
         System.out.println(fornecedor);
-
+        
         final Produto produto = new Produto(id, descricao, preco, estoque, fornecedor);
-
+        
         dao.atualizar(produto);
         Utilitarios.limpaTela(this.painelDados);
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -475,6 +486,12 @@ public class FormularioProdutos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
+    private void btnProdutoFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutoFornecedorActionPerformed
+        final var result = dao.listar("");
+        result.forEach(System.out::println);
+        
+    }//GEN-LAST:event_btnProdutoFornecedorActionPerformed
+    
     private String getValue(int row, int column) {
         Object value = tabelaProdutos.getValueAt(row, column);
         return value != null ? value.toString() : "";
@@ -517,6 +534,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnPesquisaDescricao;
     private javax.swing.JButton btnPesquisar;
+    private javax.swing.JButton btnProdutoFornecedor;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<FornecedorMinDto> cbFornecedor;
     private javax.swing.JLabel jLabel1;
@@ -543,27 +561,27 @@ public class FormularioProdutos extends javax.swing.JFrame {
         txtDescricao.setText(produto.getDescricao());
         txtEstoque.setText(Integer.toString(produto.getQuantidadeEstoque()));
         txtPreco.setText(Double.toString(produto.getPreco()));
-
+        
         txtCodigo.setText(produto.getId().toString());
-
+        
         carregarDadosFornecedores();
         String fornecedor = fornecedorDao.buscarNomeFornecedor(produto.getFornecedor().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrotrado!"));
         //System.out.println("Fornecedor: " + fornecedor);
         cbFornecedor.setSelectedItem(fornecedor);
     }
-
+    
     private void popularTabela(List<Produto> produtos) {
-
+        
         DefaultTableModel model = (DefaultTableModel) tabelaProdutos.getModel();
 
         // limpa a tabela
         model.setRowCount(0);
-
+        
         for (Produto p : produtos) {
             final String fornecedor = fornecedorDao.buscarNomeFornecedor(p.getFornecedor().getId())
                     .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
-
+            
             model.addRow(new Object[]{
                 p.getId(),
                 p.getDescricao(),
@@ -572,23 +590,23 @@ public class FormularioProdutos extends javax.swing.JFrame {
                 fornecedor});
         }
     }
-
+    
     private void carregarDadosNaTabela() {
         final String nome = txtPesquisaDescricao.getText();
         final List<Produto> produtos = dao.listar(nome);
         popularTabela(produtos);
     }
-
+    
     private void buscarDadosDoProduto() {
         String descricao = txtDescricao.getText();
         try {
             if (descricao.isBlank()) {
                 throw new IllegalArgumentException("Preencha a descrição para realizar a busca!");
             }
-
+            
             var produto = dao.buscarProduto(descricao)
                     .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado."));
-
+            
             popularCampos(produto);
         } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro na Busca", JOptionPane.WARNING_MESSAGE);
@@ -599,21 +617,21 @@ public class FormularioProdutos extends javax.swing.JFrame {
             txtDescricao.requestFocus();
         }
     }
-
+    
     private Optional<FornecedorMinDto> buscaFornecedor(String nome) {
         return lista.stream().filter(f -> f.name().equals(nome)).findFirst();
     }
-
+    
     private void carregarDadosFornecedores() {
         try {
             lista = fornecedorDao.listarFornecedoresCadastrados();
-
+            
             cbFornecedor.removeAllItems();
-
+            
             for (int i = 0; i < lista.size(); i++) {
                 cbFornecedor.addItem(lista.get(i));
             }
-
+            
         } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(
                     this,

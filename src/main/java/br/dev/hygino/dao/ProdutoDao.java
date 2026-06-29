@@ -1,8 +1,10 @@
 package br.dev.hygino.dao;
 
+import br.dev.hygino.dto.ProdutoDto;
 import br.dev.hygino.exceptions.DatabaseException;
 import br.dev.hygino.exceptions.ResourceNotFoundException;
 import br.dev.hygino.jdbc.ConexaoBanco;
+import br.dev.hygino.models.Fornecedor;
 import br.dev.hygino.models.Produto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -89,11 +91,29 @@ public final class ProdutoDao {
         List<Produto> produtos = new ArrayList<>();
 
         var sql = """
-        SELECT * FROM tb_produtos
-        WHERE UPPER(descricao) LIKE CONCAT('%', UPPER(?), '%')
-        """;
-
-        FornecedorDao fornecedorDao = new FornecedorDao();
+                 SELECT
+                     p.id,
+                     p.descricao AS descricao,
+                     p.preco AS preco,
+                     p.qtd_estoque AS estoque,
+                     f.nome AS fornecedor,
+                     f.id AS for_id,
+                     f.cnpj AS cnpj,
+                     f.email AS email,
+                     f.telefone AS telefone,
+                     f.celular AS celular,
+                     f.cep AS cep,
+                     f.numero AS numero,
+                     f.endereco AS endereco,
+                     f.complemento AS complemento,
+                     f.bairro AS bairro,
+                     f.cidade AS cidade,
+                     f.estado AS estado
+                 FROM tb_produtos AS p
+                 JOIN tb_fornecedores AS f
+                 ON p.for_id = f.id
+                 WHERE UPPER(descricao) LIKE CONCAT('%', UPPER(?), '%') 
+                 """;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -103,14 +123,27 @@ public final class ProdutoDao {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                var fornecedor = fornecedorDao.buscarFornecedorPorId(rs.getInt("for_id"))
-                        .orElseThrow(() -> new IllegalArgumentException("Fornecedor não encontrado!"));
+                final Fornecedor fornecedor = new Fornecedor(
+                        rs.getInt("for_id"),
+                        rs.getString("fornecedor"),
+                        rs.getString("cnpj"),
+                        rs.getString("email"),
+                        rs.getString("telefone"),
+                        rs.getString("celular"),
+                        rs.getString("cep"),
+                        rs.getString("endereco"),
+                        rs.getInt("numero"),
+                        rs.getString("complemento"),
+                        rs.getString("bairro"),
+                        rs.getString("cidade"),
+                        rs.getString("estado")
+                );
 
                 Produto produto = new Produto(
                         rs.getInt("id"),
                         rs.getString("descricao"),
                         rs.getDouble("preco"),
-                        rs.getInt("qtd_estoque"),
+                        rs.getInt("estoque"),
                         fornecedor
                 );
 
@@ -127,25 +160,59 @@ public final class ProdutoDao {
     }
 
     public Optional<Produto> buscarProduto(String descricao) {
-        final var sql = """
-                  SELECT * FROM tb_produtos
-                  WHERE UPPER(descricao) = UPPER(?)
-                  """;
+
+        var sql = """
+                 SELECT
+                     p.id,
+                     p.descricao AS descricao,
+                     p.preco AS preco,
+                     p.qtd_estoque AS estoque,
+                     f.nome AS fornecedor,
+                     f.id AS for_id,
+                     f.cnpj AS cnpj,
+                     f.email AS email,
+                     f.telefone AS telefone,
+                     f.celular AS celular,
+                     f.cep AS cep,
+                     f.numero AS numero,
+                     f.endereco AS endereco,
+                     f.complemento AS complemento,
+                     f.bairro AS bairro,
+                     f.cidade AS cidade,
+                     f.estado AS estado
+                 FROM tb_produtos AS p
+                 JOIN tb_fornecedores AS f
+                 ON p.for_id = f.id
+                 WHERE UPPER(descricao) = UPPER(?)
+                 """;
 
         Optional<Produto> result = Optional.empty();
-        FornecedorDao fornecedorDao = new FornecedorDao();
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, descricao);
             try (ResultSet rs = stmt.executeQuery()) {
-                var fornecedor = fornecedorDao.buscarFornecedorPorId(rs.getInt("for_id"))
-                        .orElseThrow(() -> new IllegalArgumentException("Fornecedor não encontrado!"));
                 if (rs.next()) {
-                    Produto produto = new Produto(
+                    final Fornecedor fornecedor = new Fornecedor(
+                            rs.getInt("for_id"),
+                            rs.getString("fornecedor"),
+                            rs.getString("cnpj"),
+                            rs.getString("email"),
+                            rs.getString("telefone"),
+                            rs.getString("celular"),
+                            rs.getString("cep"),
+                            rs.getString("endereco"),
+                            rs.getInt("numero"),
+                            rs.getString("complemento"),
+                            rs.getString("bairro"),
+                            rs.getString("cidade"),
+                            rs.getString("estado")
+                    );
+
+                    final Produto produto = new Produto(
                             rs.getInt("id"),
                             rs.getString("descricao"),
                             rs.getDouble("preco"),
-                            rs.getInt("qtd_estoque"),
+                            rs.getInt("estoque"),
                             fornecedor
                     );
                     result = Optional.of(produto);
@@ -154,6 +221,46 @@ public final class ProdutoDao {
             }
         } catch (SQLException e) {
             throw new ResourceNotFoundException("Erro ao buscar produto: " + e.getMessage() + "Erro no Banco de Dados");
+        }
+    }
+
+    public List<ProdutoDto> listarDto() {
+
+        List<ProdutoDto> produtos = new ArrayList<>();
+
+        final var sql = """
+                     SELECT
+                         p.id,
+                         p.descricao AS descricao,
+                         p.preco as preco,
+                         p.qtd_estoque as estoque,
+                         f.nome AS fornecedor
+                     FROM tb_produtos AS p
+                     JOIN tb_fornecedores AS f
+                     ON p.for_id = f.id;
+                     """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                ProdutoDto produtoDto = new ProdutoDto(
+                        rs.getInt("id"),
+                        rs.getString("descricao"),
+                        rs.getDouble("preco"),
+                        rs.getInt("estoque"),
+                        rs.getString("fornecedor"));
+
+                produtos.add(produtoDto);
+            }
+
+            return produtos;
+
+        } catch (SQLException e) {
+            throw new ResourceNotFoundException(
+                    "Erro ao buscar produtos: " + e.getMessage()
+            );
         }
     }
 }

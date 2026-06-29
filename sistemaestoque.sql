@@ -360,3 +360,36 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+SELECT
+    p.id,
+    p.descricao AS descricao,
+    p.preco as preco,
+    p.qtd_estoque as estoque,
+    f.nome AS fornecedor
+FROM tb_produtos AS p
+JOIN tb_fornecedores AS f
+ON p.for_id = f.id;
+
+SELECT
+                     p.id,
+                     p.descricao AS descricao,
+                     p.preco as preco,
+                     p.qtd_estoque as estoque,
+                     f.nome AS fornecedor,
+                     f.id as for_id,
+                     f.cnpj as cnpj,
+                     f.email as email,
+                     f.telefone as telefone,
+                     f.celular as celular,
+                     f.cep as cep,
+                     f.numero as numero,
+                     f.endereco as endereco,
+                     f.complemento as complemento,
+                     f.bairro as bairro,
+                     f.cidade as cidade,
+                     f.estado as estado
+                 FROM tb_produtos AS p
+                 JOIN tb_fornecedores AS f
+                 ON p.for_id = f.id
+                 WHERE UPPER(descricao) = UPPER("Furadeira sem fio Makita");
