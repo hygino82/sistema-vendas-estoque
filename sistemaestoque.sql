@@ -393,3 +393,36 @@ SELECT
                  JOIN tb_fornecedores AS f
                  ON p.for_id = f.id
                  WHERE UPPER(descricao) = UPPER("Furadeira sem fio Makita");
+
+
+DELIMITER $$
+
+CREATE PROCEDURE find_product_by_description(
+    IN p_descricao VARCHAR(100)
+)
+BEGIN
+    SELECT
+        p.id,
+        p.descricao AS descricao,
+        p.preco AS preco,
+        p.qtd_estoque AS estoque,
+        f.nome AS fornecedor,
+        f.id AS for_id,
+        f.cnpj AS cnpj,
+        f.email AS email,
+        f.telefone AS telefone,
+        f.celular AS celular,
+        f.cep AS cep,
+        f.numero AS numero,
+        f.endereco AS endereco,
+        f.complemento AS complemento,
+        f.bairro AS bairro,
+        f.cidade AS cidade,
+        f.estado AS estado
+    FROM tb_produtos AS p
+    INNER JOIN tb_fornecedores AS f
+        ON p.for_id = f.id
+    WHERE UPPER(descricao) LIKE CONCAT('%', UPPER(p_descricao), '%');
+END$$
+
+DELIMITER ;

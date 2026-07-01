@@ -90,7 +90,7 @@ public final class ProdutoDao {
 
         List<Produto> produtos = new ArrayList<>();
 
-        var sql = """
+        /*var sql3 = """
                  SELECT
                      p.id,
                      p.descricao AS descricao,
@@ -113,7 +113,9 @@ public final class ProdutoDao {
                  JOIN tb_fornecedores AS f
                  ON p.for_id = f.id
                  WHERE UPPER(descricao) LIKE CONCAT('%', UPPER(?), '%') 
-                 """;
+                 """;*/
+
+        var sql = "CALL find_product_by_description(?)";//store procedure
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
