@@ -424,6 +424,8 @@ public class FormularioProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDescricaoKeyPressed
 
     private void tabelaProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProdutosMouseClicked
+        carregarDadosFornecedores();
+
         int row = tabelaProdutos.getSelectedRow();
 
         if (row == -1) {
@@ -486,22 +488,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
 
     private void cbFornecedorAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_cbFornecedorAncestorAdded
         System.out.println("Ancestor Added");
-
-        cbFornecedor.removeAllItems();
-
-        try {
-            fornecedorDao.listarFornecedoresCadastrados()
-                    .forEach(fornecedor -> {
-                        cbFornecedor.addItem(fornecedor);
-                    });
-        } catch (ResourceNotFoundException e) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    e.getMessage(),
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
+        carregarDadosFornecedores();
     }//GEN-LAST:event_cbFornecedorAncestorAdded
 
     private String getValue(int row, int column) {
@@ -633,15 +620,13 @@ public class FormularioProdutos extends javax.swing.JFrame {
         return lista.stream().filter(f -> f.name().equals(nome)).findFirst();
     }
 
-    /*private void carregarDadosFornecedores() {
+    private void carregarDadosFornecedores() {
         try {
             lista = fornecedorDao.listarFornecedoresCadastrados();
 
             cbFornecedor.removeAllItems();
 
-            for (int i = 0; i < lista.size(); i++) {
-                cbFornecedor.addItem(lista.get(i));
-            }
+            lista.forEach(item -> cbFornecedor.addItem(item));
 
         } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(
@@ -651,5 +636,5 @@ public class FormularioProdutos extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE
             );
         }
-    }*/
+    }
 }
