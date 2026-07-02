@@ -19,20 +19,20 @@ import javax.swing.table.DefaultTableModel;
  * @author hygino
  */
 public class FormularioProdutos extends javax.swing.JFrame {
-    
+
     private List<FornecedorMinDto> lista;
     //Singleton for create a unique instance of FormularioClientes
 
     private static FormularioProdutos instance;
-    
+
     public static FormularioProdutos getInstance() {
         if (instance == null) {
             instance = new FormularioProdutos();
         }
-        
+
         return instance;
     }
-    
+
     private final ProdutoDao dao;
     private final FornecedorDao fornecedorDao;
 
@@ -203,6 +203,16 @@ public class FormularioProdutos extends javax.swing.JFrame {
 
         jLabel19.setText("Fornecedor:");
 
+        cbFornecedor.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                cbFornecedorAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+
         javax.swing.GroupLayout painelDadosLayout = new javax.swing.GroupLayout(painelDados);
         painelDados.setLayout(painelDadosLayout);
         painelDadosLayout.setHorizontalGroup(
@@ -349,9 +359,9 @@ public class FormularioProdutos extends javax.swing.JFrame {
         final String nomeFornecedor = ((FornecedorMinDto) cbFornecedor.getSelectedItem()).name();
         final Fornecedor fornecedor = fornecedorDao.buscarFornecedor(nomeFornecedor)
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
-        
+
         final var produto = new Produto(null, descricao, preco, estoque, fornecedor);
-        
+
         dao.salvar(produto);
         Utilitarios.limpaTela(this.painelDados);
     }//GEN-LAST:event_btnSalvarActionPerformed
@@ -370,7 +380,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
             var result = dao.listar(descricao);
             if (!result.isEmpty()) {
                 popularTabela(result);
-                
+
             } else {
                 JOptionPane.showMessageDialog(
                         this,
@@ -388,7 +398,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPesquisaDescricaoActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        carregarDadosFornecedores();
+        //carregarDadosFornecedores();
         try {
             final List<Produto> produtos = dao.listar("");
             popularTabela(produtos);
@@ -403,7 +413,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void txtPesquisaDescricaoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaDescricaoKeyReleased
-        
+
         carregarDadosNaTabela();
     }//GEN-LAST:event_txtPesquisaDescricaoKeyReleased
 
@@ -415,13 +425,13 @@ public class FormularioProdutos extends javax.swing.JFrame {
 
     private void tabelaProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProdutosMouseClicked
         int row = tabelaProdutos.getSelectedRow();
-        
+
         if (row == -1) {
             return; // nenhuma linha selecionada
         }
-        
+
         painelGuias.setSelectedIndex(1);
-        
+
         txtCodigo.setText(getValue(row, 0));
         txtDescricao.setText(getValue(row, 1));
         txtPreco.setText(getValue(row, 2));
@@ -430,9 +440,8 @@ public class FormularioProdutos extends javax.swing.JFrame {
         //var fornecedor = buscaFornecedor(Integer.parseInt(getValue(row, 4)))
         var fornecedor = buscaFornecedor(getValue(row, 4))
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não econtrado!"));
-        
+
         //System.out.println(fornecedor);
-        
         cbFornecedor.setSelectedItem(fornecedor);
     }//GEN-LAST:event_tabelaProdutosMouseClicked
 
@@ -444,14 +453,14 @@ public class FormularioProdutos extends javax.swing.JFrame {
 
         //TODO corrigir método pois a entidade produto tem o objeto Fornecedor
         final String nomeFornecedor = ((FornecedorMinDto) cbFornecedor.getSelectedItem()).name();
-        
+
         final Fornecedor fornecedor = fornecedorDao.buscarFornecedor(nomeFornecedor)
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
-        
+
         System.out.println(fornecedor);
-        
+
         final Produto produto = new Produto(id, descricao, preco, estoque, fornecedor);
-        
+
         dao.atualizar(produto);
         Utilitarios.limpaTela(this.painelDados);
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -474,7 +483,27 @@ public class FormularioProdutos extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
-    
+
+    private void cbFornecedorAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_cbFornecedorAncestorAdded
+        System.out.println("Ancestor Added");
+
+        cbFornecedor.removeAllItems();
+
+        try {
+            fornecedorDao.listarFornecedoresCadastrados()
+                    .forEach(fornecedor -> {
+                        cbFornecedor.addItem(fornecedor);
+                    });
+        } catch (ResourceNotFoundException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }//GEN-LAST:event_cbFornecedorAncestorAdded
+
     private String getValue(int row, int column) {
         Object value = tabelaProdutos.getValueAt(row, column);
         return value != null ? value.toString() : "";
@@ -543,27 +572,27 @@ public class FormularioProdutos extends javax.swing.JFrame {
         txtDescricao.setText(produto.getDescricao());
         txtEstoque.setText(Integer.toString(produto.getQuantidadeEstoque()));
         txtPreco.setText(Double.toString(produto.getPreco()));
-        
+
         txtCodigo.setText(produto.getId().toString());
-        
-        carregarDadosFornecedores();
+
+        //carregarDadosFornecedores();
         String fornecedor = fornecedorDao.buscarNomeFornecedor(produto.getFornecedor().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrotrado!"));
         //System.out.println("Fornecedor: " + fornecedor);
         cbFornecedor.setSelectedItem(fornecedor);
     }
-    
+
     private void popularTabela(List<Produto> produtos) {
-        
+
         DefaultTableModel model = (DefaultTableModel) tabelaProdutos.getModel();
 
         // limpa a tabela
         model.setRowCount(0);
-        
+
         for (Produto p : produtos) {
             final String fornecedor = fornecedorDao.buscarNomeFornecedor(p.getFornecedor().getId())
                     .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
-            
+
             model.addRow(new Object[]{
                 p.getId(),
                 p.getDescricao(),
@@ -572,23 +601,23 @@ public class FormularioProdutos extends javax.swing.JFrame {
                 fornecedor});
         }
     }
-    
+
     private void carregarDadosNaTabela() {
         final String nome = txtPesquisaDescricao.getText();
         final List<Produto> produtos = dao.listar(nome);
         popularTabela(produtos);
     }
-    
+
     private void buscarDadosDoProduto() {
         String descricao = txtDescricao.getText();
         try {
             if (descricao.isBlank()) {
                 throw new IllegalArgumentException("Preencha a descrição para realizar a busca!");
             }
-            
+
             var produto = dao.buscarProduto(descricao)
                     .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado."));
-            
+
             popularCampos(produto);
         } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro na Busca", JOptionPane.WARNING_MESSAGE);
@@ -599,21 +628,21 @@ public class FormularioProdutos extends javax.swing.JFrame {
             txtDescricao.requestFocus();
         }
     }
-    
+
     private Optional<FornecedorMinDto> buscaFornecedor(String nome) {
         return lista.stream().filter(f -> f.name().equals(nome)).findFirst();
     }
-    
-    private void carregarDadosFornecedores() {
+
+    /*private void carregarDadosFornecedores() {
         try {
             lista = fornecedorDao.listarFornecedoresCadastrados();
-            
+
             cbFornecedor.removeAllItems();
-            
+
             for (int i = 0; i < lista.size(); i++) {
                 cbFornecedor.addItem(lista.get(i));
             }
-            
+
         } catch (ResourceNotFoundException e) {
             JOptionPane.showMessageDialog(
                     this,
@@ -622,5 +651,5 @@ public class FormularioProdutos extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE
             );
         }
-    }
+    }*/
 }
