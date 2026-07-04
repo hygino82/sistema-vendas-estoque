@@ -10,17 +10,17 @@ import javax.swing.SwingUtilities;
  * @author hygino
  */
 public class AreaTrabalho extends javax.swing.JFrame {
-
+    
     private static AreaTrabalho instance;
-
+    
     public static AreaTrabalho getInstance() {
         if (instance == null) {
             instance = new AreaTrabalho();
         }
-
+        
         return instance;
     }
-
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AreaTrabalho.class.getName());
 
     /**
@@ -57,8 +57,10 @@ public class AreaTrabalho extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -120,13 +122,22 @@ public class AreaTrabalho extends javax.swing.JFrame {
         jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/produtos.png"))); // NOI18N
         jMenu4.setText("Produtos");
 
+        jMenu8.setText("Meus Produtos");
+
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         jMenuItem5.setText("Controle de estoque");
-        jMenu4.add(jMenuItem5);
+        jMenu8.add(jMenuItem5);
 
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         jMenuItem6.setText("Consulta de produtos");
-        jMenu4.add(jMenuItem6);
+        jMenu8.add(jMenuItem6);
+
+        jMenuItem11.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem11.setText("Formulário de produtos");
+        jMenuItem11.addActionListener(this::jMenuItem11ActionPerformed);
+        jMenu8.add(jMenuItem11);
+
+        jMenu4.add(jMenu8);
 
         jMenuBar1.add(jMenu4);
 
@@ -206,6 +217,10 @@ public class AreaTrabalho extends javax.swing.JFrame {
                 .setVisible(true));
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        SwingUtilities.invokeLater(() -> FormularioProdutos.getInstance().setVisible(true));
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -239,9 +254,11 @@ public class AreaTrabalho extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
