@@ -21,7 +21,6 @@ import javax.swing.table.DefaultTableModel;
 public class FormularioProdutos extends javax.swing.JFrame {
 
     private List<FornecedorMinDto> lista;
-    //Singleton for create a unique instance of FormularioClientes
 
     private static FormularioProdutos instance;
 
@@ -43,6 +42,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
         initComponents();
         dao = new ProdutoDao();
         fornecedorDao = new FornecedorDao();
+        carregarDadosFornecedores();
     }
 
     /**
@@ -398,7 +398,6 @@ public class FormularioProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPesquisaDescricaoActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        //carregarDadosFornecedores();
         try {
             final List<Produto> produtos = dao.listar("");
             popularTabela(produtos);
@@ -413,7 +412,6 @@ public class FormularioProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void txtPesquisaDescricaoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaDescricaoKeyReleased
-
         carregarDadosNaTabela();
     }//GEN-LAST:event_txtPesquisaDescricaoKeyReleased
 
@@ -424,8 +422,6 @@ public class FormularioProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDescricaoKeyPressed
 
     private void tabelaProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProdutosMouseClicked
-        carregarDadosFornecedores();
-
         int row = tabelaProdutos.getSelectedRow();
 
         if (row == -1) {
@@ -439,11 +435,9 @@ public class FormularioProdutos extends javax.swing.JFrame {
         txtPreco.setText(getValue(row, 2));
         txtEstoque.setText(getValue(row, 3));
 
-        //var fornecedor = buscaFornecedor(Integer.parseInt(getValue(row, 4)))
-        var fornecedor = buscaFornecedor(getValue(row, 4))
+        FornecedorMinDto fornecedor = buscaFornecedor(getValue(row, 4))
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não econtrado!"));
 
-        //System.out.println(fornecedor);
         cbFornecedor.setSelectedItem(fornecedor);
     }//GEN-LAST:event_tabelaProdutosMouseClicked
 
@@ -453,7 +447,6 @@ public class FormularioProdutos extends javax.swing.JFrame {
         final double preco = Double.parseDouble(txtPreco.getText());
         final int estoque = Integer.parseInt(txtEstoque.getText());
 
-        //TODO corrigir método pois a entidade produto tem o objeto Fornecedor
         final String nomeFornecedor = ((FornecedorMinDto) cbFornecedor.getSelectedItem()).name();
 
         final Fornecedor fornecedor = fornecedorDao.buscarFornecedor(nomeFornecedor)
@@ -487,8 +480,8 @@ public class FormularioProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void cbFornecedorAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_cbFornecedorAncestorAdded
-        System.out.println("Ancestor Added");
-        carregarDadosFornecedores();
+        //System.out.println("Ancestor Added");
+        // carregarDadosFornecedores();
     }//GEN-LAST:event_cbFornecedorAncestorAdded
 
     private String getValue(int row, int column) {
@@ -562,10 +555,7 @@ public class FormularioProdutos extends javax.swing.JFrame {
 
         txtCodigo.setText(produto.getId().toString());
 
-        //carregarDadosFornecedores();
-        String fornecedor = fornecedorDao.buscarNomeFornecedor(produto.getFornecedor().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrotrado!"));
-        //System.out.println("Fornecedor: " + fornecedor);
+        final var fornecedor = new FornecedorMinDto(produto.getFornecedor().getId(), produto.getFornecedor().getNome());
         cbFornecedor.setSelectedItem(fornecedor);
     }
 
