@@ -114,7 +114,6 @@ public final class ProdutoDao {
                  ON p.for_id = f.id
                  WHERE UPPER(descricao) LIKE CONCAT('%', UPPER(?), '%') 
                  """;*/
-
         var sql = "CALL find_product_by_description(?)";//store procedure
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -263,6 +262,26 @@ public final class ProdutoDao {
             throw new ResourceNotFoundException(
                     "Erro ao buscar produtos: " + e.getMessage()
             );
+        }
+    }
+
+    public int atualizarEstoque(Produto produto, int quantidadeAdicionada) {
+
+        int novaQuantidade = quantidadeAdicionada + produto.getQuantidadeEstoque();
+
+        final var sql = """
+                            UPDATE tb_produtos
+                            SET qtd_estoque = ?
+                            WHERE id = ?
+                        """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, novaQuantidade);
+            stmt.setLong(2, produto.getId());
+
+            return stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DatabaseException("Erro ao atualizar produto: " + e.getMessage() + "Erro no Banco de Dados");
         }
     }
 }
