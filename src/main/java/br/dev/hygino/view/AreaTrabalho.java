@@ -10,17 +10,17 @@ import javax.swing.SwingUtilities;
  * @author hygino
  */
 public class AreaTrabalho extends javax.swing.JFrame {
-    
+
     private static AreaTrabalho instance;
-    
+
     public static AreaTrabalho getInstance() {
         if (instance == null) {
             instance = new AreaTrabalho();
         }
-        
+
         return instance;
     }
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AreaTrabalho.class.getName());
 
     /**
@@ -130,6 +130,7 @@ public class AreaTrabalho extends javax.swing.JFrame {
 
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         jMenuItem6.setText("Consulta de produtos");
+        jMenuItem6.addActionListener(this::jMenuItem6ActionPerformed);
         jMenu8.add(jMenuItem6);
 
         jMenuItem11.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_DOWN_MASK));
@@ -218,8 +219,20 @@ public class AreaTrabalho extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        SwingUtilities.invokeLater(() -> FormularioProdutos.getInstance().setVisible(true));
+        SwingUtilities.invokeLater(() -> {
+            FormularioProdutos formulario = FormularioProdutos.getInstance();
+            formulario.painelGuias.setSelectedIndex(1);
+            formulario.setVisible(true);
+        });
     }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        SwingUtilities.invokeLater(() -> {
+            FormularioProdutos formulario = FormularioProdutos.getInstance();
+            formulario.painelGuias.setSelectedIndex(0);
+            formulario.setVisible(true);
+        });
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**
      * @param args the command line arguments
