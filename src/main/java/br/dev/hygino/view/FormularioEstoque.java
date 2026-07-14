@@ -2,7 +2,6 @@ package br.dev.hygino.view;
 
 import br.dev.hygino.dao.ProdutoDao;
 import br.dev.hygino.exceptions.ResourceNotFoundException;
-import br.dev.hygino.models.Fornecedor;
 import br.dev.hygino.models.Produto;
 import br.dev.hygino.utils.Utilitarios;
 import java.awt.HeadlessException;
@@ -13,10 +12,6 @@ import javax.swing.table.DefaultTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author hygino
- */
 public class FormularioEstoque extends javax.swing.JFrame {
 
     private static final Logger logger
@@ -24,7 +19,6 @@ public class FormularioEstoque extends javax.swing.JFrame {
 
     private List<Produto> listaProdutos;
     private Produto produto;
-    private Fornecedor fornecedor;
 
     private static FormularioEstoque instance;
 
@@ -69,6 +63,8 @@ public class FormularioEstoque extends javax.swing.JFrame {
         btnAdicionar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabelaProdutos = new javax.swing.JTable();
+        jLabel19 = new javax.swing.JLabel();
+        txtEstoqueAdicionar = new javax.swing.JTextField();
         btnNovo = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
@@ -130,6 +126,8 @@ public class FormularioEstoque extends javax.swing.JFrame {
 
         jLabel18.setText("Quantidade atual:");
 
+        txtEstoque.setEditable(false);
+
         btnAdicionar.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/dev/hygino/imgs/novo.png"))); // NOI18N
         btnAdicionar.setText("Adicionar");
@@ -154,19 +152,14 @@ public class FormularioEstoque extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tabelaProdutos);
 
+        jLabel19.setText("Quantidade atualizada");
+
         javax.swing.GroupLayout painelDadosLayout = new javax.swing.GroupLayout(painelDados);
         painelDados.setLayout(painelDadosLayout);
         painelDadosLayout.setHorizontalGroup(
             painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelDadosLayout.createSequentialGroup()
                 .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(painelDadosLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAdicionar))
                     .addGroup(painelDadosLayout.createSequentialGroup()
                         .addContainerGap(15, Short.MAX_VALUE)
                         .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,7 +170,21 @@ public class FormularioEstoque extends javax.swing.JFrame {
                             .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPesquisar)))
+                        .addComponent(btnPesquisar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, painelDadosLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(painelDadosLayout.createSequentialGroup()
+                                .addComponent(jLabel19)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtEstoqueAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(painelDadosLayout.createSequentialGroup()
+                                .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnAdicionar)))))
                 .addContainerGap(1234, Short.MAX_VALUE))
             .addGroup(painelDadosLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
@@ -200,7 +207,11 @@ public class FormularioEstoque extends javax.swing.JFrame {
                     .addComponent(jLabel18)
                     .addComponent(txtEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAdicionar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel19)
+                    .addComponent(txtEstoqueAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -361,7 +372,7 @@ public class FormularioEstoque extends javax.swing.JFrame {
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         logger.info("Acrecentando quantidade ao estoque");
 
-        var res = dao.atualizarEstoque(produto, Integer.parseInt(txtEstoque.getText()));
+        var res = dao.atualizarEstoque(produto, Integer.parseInt(txtEstoqueAdicionar.getText()));
 
         if (res > 0) {
             logger.info("Estoque atualizado!");
@@ -369,6 +380,7 @@ public class FormularioEstoque extends javax.swing.JFrame {
 
         listaProdutos = dao.listar("");
         popularTabela(listaProdutos);
+        Utilitarios.limpaTela(this.painelDados);
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
@@ -428,6 +440,7 @@ public class FormularioEstoque extends javax.swing.JFrame {
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
@@ -438,6 +451,7 @@ public class FormularioEstoque extends javax.swing.JFrame {
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDescricao;
     private javax.swing.JTextField txtEstoque;
+    private javax.swing.JTextField txtEstoqueAdicionar;
     // End of variables declaration//GEN-END:variables
 
     private void popularCampos(Produto produto) {
